@@ -3,36 +3,47 @@ using Colossal.Logging;
 using Game;
 using Game.Modding;
 using Game.SceneFlow;
+using Mod.AchievementHelper;
 
 namespace AchievementHelper
 {
     public class Mod : IMod
     {
-        public static ILog log = LogManager.GetLogger($"{nameof(AchievementHelper)}.{nameof(Mod)}").SetShowsErrorsInUI(false);
-        private Setting m_Setting;
+        public static readonly ILog Log =
+            LogManager.GetLogger("AchievementHelper").SetShowsErrorsInUI(false);
+
+        public static Settings Settings { get; private set; } = null!;
+
+        private Settings m_SettingsInstance;
 
         public void OnLoad(UpdateSystem updateSystem)
         {
-            log.Info(nameof(OnLoad));
+            Log.Info(nameof(OnLoad));
 
-            if (GameManager.instance.modManager.TryGetExecutableAsset(this, out var asset))
-                log.Info($"Current mod asset at {asset.path}");
+            // Settings + localization
+            m_SettingsInstance = new Settings(this);
+            m_SettingsInstance.RegisterInOptionsUI();
+            Settings = m_SettingsInstance;
 
-            m_Setting = new Setting(this);
-            m_Setting.RegisterInOptionsUI();
-            GameManager.instance.localizationManager.AddSource("en-US", new LocaleEN(m_Setting));
+            GameManager.instance.localizationManager.AddSource("en-US",
+                new Locale.LocaleEN(m_SettingsInstance));
 
+            // Load saved values (if present)
+            AssetDatabase.global.LoadSettings(nameof(AchievementHelper),
+                m_SettingsInstance, new Settings(this));
 
-            AssetDatabase.global.LoadSettings(nameof(AchievementHelper), m_Setting, new Setting(this));
+            // Schedule our system; make its OnUpdate run after AchievementTriggerSystem
+            updateSystem.UpdateAfter<AchievementHelperSystem, Game.Achievements.AchievementTriggerSystem>
+                (SystemUpdatePhase.MainLoop);
         }
 
         public void OnDispose()
         {
-            log.Info(nameof(OnDispose));
-            if (m_Setting != null)
+            Log.Info(nameof(OnDispose));
+            if (m_SettingsInstance != null)
             {
-                m_Setting.UnregisterInOptionsUI();
-                m_Setting = null;
+                m_SettingsInstance.UnregisterInOptionsUI();
+                m_SettingsInstance = null!;
             }
         }
     }

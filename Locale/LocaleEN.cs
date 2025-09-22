@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Colossal;
 using Colossal.IO.AssetDatabase;
 
-namespace AchievementHelper
+namespace Mod.AchievementHelper
 {
     /// <summary>Static labels and tooltips for the Settings UI.</summary>
     public class LocaleEN : IDictionarySource
@@ -25,7 +25,9 @@ namespace AchievementHelper
                 // Toggle
                 { m_Settings.GetOptionLabelLocaleID(nameof(Settings.EnableAchievements)), "Enable achievements" },
                 { m_Settings.GetOptionDescLocaleID(nameof(Settings.EnableAchievements)),
-                  "When ON (default), re-enables achievements while using mods and protects the flag during loading." },
+                  "When ON (default), enables achievements while using mods and keeps it on during loading.\n\n" +
+                  "The game normally disables achievements if it detects any mods are installed.\n\n" +
+                  "You will still need to do the required actions that you would normally do to get each achievement." },
 
                 // About
                 { m_Settings.GetOptionLabelLocaleID(nameof(Settings.NameDisplay)), "Mod" },

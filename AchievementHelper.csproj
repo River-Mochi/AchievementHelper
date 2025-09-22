@@ -2,15 +2,41 @@
 
 	<PropertyGroup>
 		<Configurations>Debug;Release</Configurations>
-	
+
 		<!--The file where mod information which is required for publishing mod on PDX mods are stored-->
 		<PublishConfigurationPath>Properties\PublishConfiguration.xml</PublishConfigurationPath>
+
+		<!-- Single source of truth for version -->
+		<Version>1.0.0</Version>
+		<FileVersion>$(Version).0</FileVersion>
+		<AssemblyVersion>1.0.0.0</AssemblyVersion>
+		<InformationalVersion>$(Version)</InformationalVersion>
+
+		<!-- Product metadata (shows in Windows + About UI) -->
+		<AssemblyTitle>Achievement Helper</AssemblyTitle>
+		<AssemblyName>AchievementHelper</AssemblyName>
+		<Product>Achievement Helper</Product>
+
+		<!-- Keep NREs away -->
+		<Nullable>enable</Nullable>
+		</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)'=='Debug'">
+		<IncludeSourceRevisionInInformationalVersion>true</IncludeSourceRevisionInInformationalVersion>
+		<DefineConstants>TRACE;DEBUG</DefineConstants>
 	</PropertyGroup>
-	
-	<!--Imports must be after PropertyGroup block-->
+
+	<PropertyGroup Condition="'$(Configuration)'=='Release'">
+		<IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+		<DefineConstants>TRACE</DefineConstants>
+	</PropertyGroup>
+
+
+	<!-- These are added by the CS2 toolchain; Imports must be after PropertyGroup block -->
 	<Import Project="$([System.Environment]::GetEnvironmentVariable('CSII_TOOLPATH', 'EnvironmentVariableTarget.User'))\Mod.props" />
 	<Import Project="$([System.Environment]::GetEnvironmentVariable('CSII_TOOLPATH', 'EnvironmentVariableTarget.User'))\Mod.targets" />
 
+	<!-- Minimal explicit refs; toolchain wires most of them -->
 	<ItemGroup>
 		<Reference Include="Game">
 			<Private>false</Private>
@@ -24,15 +50,16 @@
 		<Reference Include="Colossal.IO.AssetDatabase">
 			<Private>false</Private>
 		</Reference>
+		<Reference Include="Colossal.Localization">
+			<Private>false</Private>
+		</Reference>
 		<Reference Include="Colossal.UI">
 			<Private>false</Private>
 		</Reference>
 		<Reference Include="Colossal.UI.Binding">
 			<Private>false</Private>
 		</Reference>
-		<Reference Include="Colossal.Localization">
-			<Private>false</Private>
-		</Reference>
+
 		<Reference Include="Unity.InputSystem">
 			<Private>false</Private>
 		</Reference>
