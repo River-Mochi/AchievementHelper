@@ -25,11 +25,11 @@
 
 ---
 
-## Public surface
+## Project Layout (files & classes)
 
 - **Namespace:** `AchievementHelper`
 - **Files:**
-  - `Mod.cs` — mod entry, logs, loads settings, adds `LocaleEN`, and registers our system.
+  - `Mod.cs` — mod entry, logs, loads settings, adds `LocaleEN`, and registers system.
   - `Settings.cs` — `EnableAchievements` toggle (default ON)
   - `Locale/LocaleEN.cs` — English strings for the Settings UI.
   - `AchievementHelperSystem.cs` — assert-window logic (inherits `GameSystemBase`).
