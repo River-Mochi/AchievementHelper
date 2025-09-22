@@ -14,13 +14,5 @@
 - touch the built-in Achievements tab
 - touch any possible DLC achievements for DLCs the player does not own.
 
-<br><br>
-### Method
-- One setting (on/off), a short “assert window” after load to guard against late flips, optional watchdog for rare reports, and clear logging.
-- When a save finishes loading, then **enable** `PlatformManager.instance.achievementsEnabled = true`.
-- For a short period (default **~10 seconds** ≈ 600 frames), then **assert once per frame** to keep the flag `true`.
-- If the flag has been `true` for **30 consecutive frames** (stable), then **end early**.
-
----
 
 
