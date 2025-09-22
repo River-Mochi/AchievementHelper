@@ -20,8 +20,7 @@
 - When a save finishes loading, then **enable** `PlatformManager.instance.achievementsEnabled = true`.
 - For a short period (default **~10 seconds** ≈ 600 frames), then **assert once per frame** to keep the flag `true`.
 - If the flag has been `true` for **30 consecutive frames** (stable), then **end early**.
-- Optional **watchdog** can continue to enforce afterwards (internal, off by default, can be enabled if anyone reports a problem).
-
+- Optional **watchdog** can continue to enforce afterwards (internal code, off by default, can be enabled if anyone reports a problem).
 
 ---
 
@@ -51,6 +50,15 @@
 | `AssetDatabase.global.LoadSettings(modName, setting, new Setting(mod))` | Settings | Persist user settings between sessions. |
 
 > **Note:** Game code includes `Colossal.PSI.Common.AchievementsHelper` (plural). Our namespace `AchievementHelper` (singular) is distinct; no conflict.
+
+**Performance**
+- While active: 1–2 property checks per frame for at most ~10s (or until early exit).
+- After that: zero cost (unless watchdog is enabled).
+
+**Compatibility & Risks**
+- We only set a single engine flag; extremely low chance of conflict.
+- If another mod continually sets the flag to false after our short window, then enabling optional `watchdog` can catch it (hardcoded and off by default).
+- We do not touch saves, achievement definitions, or DLC logic.
 
 ---
 
