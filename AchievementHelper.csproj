@@ -24,6 +24,18 @@
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
+	<ItemGroup>
+		<!-- Do not include doc folder in build; If anything tried to mark docs as Content, undo it -->
+		<Content Remove="docs\**" />
+
+		<!-- Keep docs as None, and never copy or pack -->
+		<None Update="docs\**">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+			<Pack>false</Pack>
+		</None>
+	</ItemGroup>
+
+
 	<PropertyGroup Condition="'$(Configuration)'=='Debug'">
 		<IncludeSourceRevisionInInformationalVersion>true</IncludeSourceRevisionInInformationalVersion>
 		<DefineConstants>TRACE;DEBUG</DefineConstants>
