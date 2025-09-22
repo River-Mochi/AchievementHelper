@@ -3,24 +3,25 @@
 **Goal:** Keep achievements working in Cities Skylines II even when the game is started with mods.
 
 **Scope:** Minimal, reliable, and easy to read. One setting (on/off), a short “assert window” after load to guard against late flips, optional watchdog for rare reports, and clear logging.
+Active mods (not assets) will normally disqualify a save game for acheivement completion.
 
 ---
 
 ## TL;DR (behavior)
 
-- When a save finishes loading, then **force** `PlatformManager.instance.achievementsEnabled = true`.
+- When a save finishes loading, then **enable** `PlatformManager.instance.achievementsEnabled = true`.
 - For a short period (default **~10 seconds** ≈ 600 frames), then **assert once per frame** to keep the flag `true`.
 - If the flag has been `true` for **30 consecutive frames** (stable), then **end early**.
 - Optional **watchdog** can continue to enforce afterwards (internal, off by default, can be enabled if anyone reports a problem).
-- **Settings** toggle - [ ] lets players disable the behavior entirely.
+- **Settings** toggle ☑ lets players disable the mod even if it's still installed.
 
 ---
 
 ## Non-goals (Phase 1)
-
+- This mod does not automatically give you the achievement, you still need to do the natural things required, e.g., build 10 parks in a single city to get "Groundskeeper".
 - Changing the in-game UI text that claims “Achievements disabled…” (that’s a separate UI-side issue).
 - Touching the built-in **Achievements catalog** or unlocking achievements directly.
-- DLC ownership rules—`AchievementsHelper` skips DLC achievements you don’t own; we do not meddle with that.
+- DLC ownership rules—`AchievementsHelper` skips DLC achievements the player does not own. We don't add any cheats for that.
 
 ---
 
