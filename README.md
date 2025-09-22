@@ -18,5 +18,5 @@
 
 ### Credits
 - Inspired by Wayzware's early version of [Achievement Enabler](https://github.com/Wayzware/AchievementEnabler) (no longer works).
-- StarQ for helpful tips
+- StarQ for technical support
 
