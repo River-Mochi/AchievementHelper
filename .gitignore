@@ -1,0 +1,10 @@
+.vs/
+[Bb]in/
+[Oo]bj/
+*.suo
+*.user
+**/*.pubxml.user
+.vscode/
+.idea/
+*.log
+Thumbs.db
