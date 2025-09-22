@@ -16,5 +16,6 @@
 - touch any possible DLC achievements for DLCs the player does not own.
 
 ### Credits
-- Inspired by Wayzware's early version of [AchievementEnabler](https://github.com/Wayzware/AchievementEnabler) which no longer works.
+- Inspired by Wayzware's early version of [Achievement Enabler](https://github.com/Wayzware/AchievementEnabler) (no longer works).
+- StarQ for helpful tips
 
