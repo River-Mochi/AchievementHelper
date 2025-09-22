@@ -3,7 +3,7 @@ using Game;                       // GameSystemBase, Purpose, GameMode
 using Unity.Entities;             // WorldSystemFilter
 using Colossal.Serialization.Entities; // Purpose enum
 
-namespace Mod.AchievementHelper
+namespace AchievementHelper
 {
     /// <summary>
     /// Re-enables achievements after a load and keeps them TRUE during a short assert window.
