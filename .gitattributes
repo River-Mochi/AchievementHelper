@@ -6,9 +6,23 @@
 *.yml  text eol=lf
 *.yaml text eol=lf
 
+# Use LF where it matters (scripts)
+*.sh       text eol=lf
+*.bash     text eol=lf
+
 # Windows-native scripts stay CRLF
 *.ps1  text eol=crlf
 
 # Binary files
 *.png  binary
 *.jpg  binary
+
+# Default to Windows line endings for typical VS files
+*.sln      text eol=crlf
+*.csproj   text eol=crlf
+*.cs       text eol=crlf
+*.props    text eol=crlf
+*.targets  text eol=crlf
+*.md       text eol=crlf
+
+
