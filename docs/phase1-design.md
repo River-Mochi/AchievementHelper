@@ -29,10 +29,10 @@
 
 - **Namespace:** `AchievementHelper`
 - **Files:**
-  - `Mod.cs` — mod entry, logs, loads settings, adds `LocaleEN`, and registers the System to run.
+  - `Mod.cs` — main mod entry point, logs, loads settings, adds `LocaleEN`, and registers the System to run.
   - `Settings.cs` — `EnableAchievements` toggle (default ON)
-  - `Locale/LocaleEN.cs` — English strings for the Settings UI.
-  - `AchievementHelperSystem.cs` — asserts a `true` state for a short time window if anything flips it back to false (inherits `GameSystemBase`).
+  - `Locale/LocaleEN.cs` — English strings for Settings UI.
+  - `AchievementHelperSystem.cs` — after loading, checks again to ensure achievements are still enabled (inherits `GameSystemBase`).
 
 ---
 
