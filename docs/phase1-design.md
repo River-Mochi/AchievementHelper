@@ -2,13 +2,9 @@
 
 **Goal:** Keep achievements working in Cities Skylines II even when the game is started with mods.
 
-**Scope:** Minimal, reliable, and easy to read. One setting (on/off), a short “assert window” after load to guard against late flips, optional watchdog for rare reports, and clear logging.
-Active mods (not assets) will normally disqualify a save game for acheivement completion.
-
----
-
-## TL;DR (behavior)
-
+## Behavior
+- Minimal, reliable, and easy to read. One setting (on/off), a short “assert window” after load to guard against late flips, optional watchdog for rare reports, and clear logging.
+- Active mods (not assets) will normally disqualify a save game for acheivement completion.
 - When a save finishes loading, then **enable** `PlatformManager.instance.achievementsEnabled = true`.
 - For a short period (default **~10 seconds** ≈ 600 frames), then **assert once per frame** to keep the flag `true`.
 - If the flag has been `true` for **30 consecutive frames** (stable), then **end early**.
@@ -20,8 +16,8 @@ Active mods (not assets) will normally disqualify a save game for acheivement co
 ## Non-goals (Phase 1)
 - This mod does not automatically give you the achievement, you still need to do the natural things required, e.g., build 10 parks in a single city to get "Groundskeeper".
 - Changing the in-game UI text that claims “Achievements disabled…” (that’s a separate UI-side issue).
-- Touching the built-in **Achievements catalog** or unlocking achievements directly.
-- DLC ownership rules—`AchievementsHelper` skips DLC achievements the player does not own. We don't add any cheats for that.
+- Touching the built-in Achievements tab or unlocking achievements directly.
+- This mod skips DLC achievements for DLCs the player does not own. We don't meddle with that.
 
 ---
 
@@ -30,23 +26,23 @@ Active mods (not assets) will normally disqualify a save game for acheivement co
 - **Namespace:** `AchievementHelper`
 - **Files:**
   - `Mod.cs` — mod entry, logs, loads settings, adds `LocaleEN`, and registers our system.
-  - `Settings.cs` — `EnableAchievements` toggle (default ON) + a simple **About** group (version, GitHub button).
+  - `Settings.cs` — `EnableAchievements` toggle (default ON)
   - `Locale/LocaleEN.cs` — English strings for the Settings UI.
-  - `AchievementHelperSystem.cs` — the assert-window logic (inherits `GameSystemBase`).
+  - `AchievementHelperSystem.cs` — assert-window logic (inherits `GameSystemBase`).
 
 ---
 
-## Key types & APIs (from dnSpyEX notes)
+## Key types & APIs (dnSpyEX research)
 
 | Type / Member | Kind | Why we use it |
 |---|---|---|
-| `GameSystemBase` | Base class | Lets us hook game lifecycle and `OnUpdate()`. |
-| `GameSystemBase.OnGameLoadingComplete(Purpose, GameMode)` | Method | Best moment to start our short assert window. |
+| `GameSystemBase` | Base class | to hook game lifecycle and `OnUpdate()`. |
+| `GameSystemBase.OnGameLoadingComplete(Purpose, GameMode)` | Method | Best moment to start short assert window. |
 | `GameSystemBase.OnUpdate()` | Method | Runs every frame; we enforce during the window. |
-| `Colossal.PSI.Common.PlatformManager.instance` | Singleton | Holds `achievementsEnabled`. |
-| `PlatformManager.achievementsEnabled : bool` | Field/prop | The single flag that disables/enables achievements backends. |
-| `LogManager.GetLogger(...).SetShowsErrorsInUI(false)` | Logging | Traceable, but no popup spam for users. |
-| `GameManager.instance.localizationManager.AddSource("en-US", new LocaleEN(...))` | Localization | Register our English strings. |
+| `Colossal.PSI.Common.PlatformManager.instance` | Singleton | Holds `achievementsEnabled` |
+| `PlatformManager.achievementsEnabled : bool` | Field/prop | single flag that disables/enables achievements backends. |
+| `LogManager.GetLogger(...).SetShowsErrorsInUI(false)` | Logging | Traceable uses \Logs\modName.log |
+| `GameManager.instance.localizationManager.AddSource("en-US", new LocaleEN(...))` | Localization | Register English strings. |
 | `ModSetting` + `SettingsUI*` attributes | Settings UI | Build the toggle & About info without custom UI. |
 | `AssetDatabase.global.LoadSettings(modName, setting, new Setting(mod))` | Settings | Persist user settings between sessions. |
 
