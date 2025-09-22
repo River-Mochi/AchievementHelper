@@ -6,6 +6,7 @@
 
 ## Option menu
 - Toggle ☑ lets players disable the mod even if it's installed.
+- do not disable the mod if you want it to work.
 
 ### This mod does not:
 - automatically give you the achievement, you still need to do the natural things required, e.g., build 10 parks in a single city to get "Groundskeeper".
