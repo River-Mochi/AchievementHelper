@@ -47,7 +47,7 @@
 | `PlatformManager.achievementsEnabled : bool` | Field/prop | single flag that disables/enables achievements backends. |
 | `LogManager.GetLogger(...).SetShowsErrorsInUI(false)` | Logging | Traceable uses \Logs\modName.log |
 | `GameManager.instance.localizationManager.AddSource("en-US", new LocaleEN(...))` | Localization | Register English strings. |
-| `ModSetting` + `SettingsUI*` attributes | Settings UI | Build the toggle & About info without custom UI. |
+| `ModSetting` + `SettingsUI*` attributes | Settings UI | build checkbox toggles & Options menu without a custom UI. |
 | `AssetDatabase.global.LoadSettings(modName, setting, new Setting(mod))` | Settings | Persist user settings between sessions. |
 
 > **Note:** Game code includes `Colossal.PSI.Common.AchievementsHelper` (plural). Our namespace `AchievementHelper` (singular) is distinct; no conflict.
