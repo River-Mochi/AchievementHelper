@@ -15,5 +15,6 @@
 - touch the built-in Achievements tab
 - touch any possible DLC achievements for DLCs the player does not own.
 
-
+### Credits
+- Inspired by Wayzware's early version of [AchievementEnabler](https://github.com/Wayzware/AchievementEnabler) which no longer works.
 
