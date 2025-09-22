@@ -5,8 +5,9 @@
 - Active mods (not assets) will normally disqualify a save game for acheivement completion.
 - You still need to complete the tasks to get the [achievement](https://cs2.paradoxwikis.com/Achievements), this enables the chance to get them.
 
-## Option menu
+## Behavior
 - Toggle ☑ lets players disable the mod even if it's installed.
+- This mod is safe to remove anytime as it does not touch saves.
 
 ### This mod does not:
 - automatically give you the achievement. You still need to do the natural things required, e.g., build 10 parks in a single city to get "Groundskeeper".
