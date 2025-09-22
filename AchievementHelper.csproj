@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<Configurations>Debug;Release</Configurations>
 
-		<!--The file where mod information which is required for publishing mod on PDX mods are stored-->
+		<!-- Mod information file required for publishing on PDX mods -->
 		<PublishConfigurationPath>Properties\PublishConfiguration.xml</PublishConfigurationPath>
 
 		<!-- Single source of truth for version -->
@@ -17,9 +17,12 @@
 		<AssemblyName>AchievementHelper</AssemblyName>
 		<Product>Achievement Helper</Product>
 
+		<!-- Namespace clarity -->
+		<RootNamespace>AchievementHelper</RootNamespace>
+
 		<!-- Keep NREs away -->
 		<Nullable>enable</Nullable>
-		</PropertyGroup>
+	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)'=='Debug'">
 		<IncludeSourceRevisionInInformationalVersion>true</IncludeSourceRevisionInInformationalVersion>
@@ -31,8 +34,7 @@
 		<DefineConstants>TRACE</DefineConstants>
 	</PropertyGroup>
 
-
-	<!-- These are added by the CS2 toolchain; Imports must be after PropertyGroup block -->
+	<!-- CS2 toolchain; must be after PropertyGroup -->
 	<Import Project="$([System.Environment]::GetEnvironmentVariable('CSII_TOOLPATH', 'EnvironmentVariableTarget.User'))\Mod.props" />
 	<Import Project="$([System.Environment]::GetEnvironmentVariable('CSII_TOOLPATH', 'EnvironmentVariableTarget.User'))\Mod.targets" />
 
@@ -76,18 +78,6 @@
 			<Private>false</Private>
 		</Reference>
 		<Reference Include="Unity.Mathematics">
-			<Private>false</Private>
-		</Reference>
-	</ItemGroup>
-
-	<ItemGroup>
-		<Reference Update="System">
-			<Private>false</Private>
-		</Reference>
-		<Reference Update="System.Core">
-			<Private>false</Private>
-		</Reference>
-		<Reference Update="System.Data">
 			<Private>false</Private>
 		</Reference>
 	</ItemGroup>
