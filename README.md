@@ -7,11 +7,13 @@
 ## Option menu
 - Toggle ☑ lets players disable the mod even if it's installed.
 
-### Non-goals (Phase 1)
-- This mod does not automatically give you the achievement, you still need to do the natural things required, e.g., build 10 parks in a single city to get "Groundskeeper".
-- Changing the in-game UI text that claims “Achievements disabled…” (that’s a separate UI-side issue).
-- Touching the built-in Achievements tab or unlocking achievements directly.
-- This mod skips any possible DLC achievements for DLCs the player does not own. We don't meddle with that.
+### This mod does not:
+- automatically give you the achievement, you still need to do the natural things required, e.g., build 10 parks in a single city to get "Groundskeeper".
+- change the in-game UI text that claims “Achievements disabled…” (that’s a separate UI-side issue).
+    - achievements will still be enabled even if you see that text.
+- touch the built-in Achievements tab
+- touch any possible DLC achievements for DLCs the player does not own.
+
 <br><br>
 ### Method
 - One setting (on/off), a short “assert window” after load to guard against late flips, optional watchdog for rare reports, and clear logging.
