@@ -1,11 +1,10 @@
+// LocaleEN.cs
 using System.Collections.Generic;
 using Colossal;
 
 namespace AchievementHelper
 {
-    /// <summary>
-    /// English locale entries
-    /// </summary>
+    /// <summary> English strings for the Options UI. </summary>
     public class LocaleEN : IDictionarySource
     {
         private readonly Settings m_Setting;
@@ -16,7 +15,7 @@ namespace AchievementHelper
         {
             return new Dictionary<string, string>
             {
-                // Mod name in Options menu
+                // Mod name in Options menu list
                 { m_Setting.GetSettingsLocaleID(), Mod.Name },
 
                 // One section/tab
@@ -24,12 +23,24 @@ namespace AchievementHelper
 
                 // Groups
                 { m_Setting.GetOptionGroupLocaleID(Settings.MainGroup),  "Settings" },
+                { m_Setting.GetOptionGroupLocaleID(Settings.AchievementsAvailableGroup), "Available" },
+                { m_Setting.GetOptionGroupLocaleID(Settings.AchievementsCompletedGroup), "Completed" },
                 { m_Setting.GetOptionGroupLocaleID(Settings.AboutGroup), "About" },
 
                 // Toggle
                 { m_Setting.GetOptionLabelLocaleID(nameof(Settings.EnableAchievements)), "Enable achievements" },
                 { m_Setting.GetOptionDescLocaleID(nameof(Settings.EnableAchievements)),
                   "When ON (default), re-enables achievements while using mods and protects the flag during loading." },
+
+                // Available list (read-only)
+                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.AvailableList)), "Available achievements" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Settings.AvailableList)),
+                  "Locked achievements you can still earn in this save." },
+
+                // Completed list (read-only)
+                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.CompletedList)), "Completed achievements" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Settings.CompletedList)),
+                  "Achievements you’ve already earned." },
 
                 // About fields
                 { m_Setting.GetOptionLabelLocaleID(nameof(Settings.NameDisplay)), "Mod" },

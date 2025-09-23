@@ -1,7 +1,7 @@
-using Colossal.PSI.Common;        // PlatformManager
-using Game;                       // GameSystemBase, Purpose, GameMode
-using Unity.Entities;             // WorldSystemFilter
-using Colossal.Serialization.Entities; // Purpose enum
+using Colossal.PSI.Common;              // PlatformManager
+using Game;                             // GameSystemBase
+using Unity.Entities;                   // WorldSystemFilter
+using Colossal.Serialization.Entities;  // Purpose enum
 
 namespace AchievementHelper
 {
@@ -33,21 +33,28 @@ namespace AchievementHelper
         {
             base.OnGameLoadingComplete(purpose, mode);
 
-            // If settings aren’t ready, act as if enabled (defensive)
+            if (AchievementsBridge.TryBuildLists(out var avail, out var done))
+            {
+                Mod.Settings?.SetAchievementLists(avail, done);
+            }
+
+            // If user disabled the mod, do nothing for this session.
             if (Mod.Settings != null && !Mod.Settings.EnableAchievements)
             {
-                Mod.log.Info("Settings.EnableAchievements = false; leaving achievements disabled for this session.");
+                Mod.log.Info("Settings.EnableAchievements = false; leave achievements disabled this session.");
                 m_FramesLeft = 0;
                 m_StableTrueFrames = 0;
                 return;
             }
 
+            // Start or restart assert window
             m_FramesLeft = kAssertFrames;
             m_StableTrueFrames = 0;
 
-            // Flip on immediately at load-complete (late flips happen around here)
+            // Force True once at loadComplete (late flips could happen here)
             ForceEnableIfNeeded("OnGameLoadingComplete");
             Mod.log.Info($"Assert window started: {kAssertFrames} frames; early-exit after {kStableFramesToExit} stable frames.");
+
         }
 
         protected override void OnUpdate()
@@ -61,7 +68,7 @@ namespace AchievementHelper
 
                 if (hadToFlip)
                 {
-                    // We caught an off->on event; reset stability
+                    // Caught an off->on event; reset stability
                     m_StableTrueFrames = 0;
                 }
                 else
@@ -92,7 +99,7 @@ namespace AchievementHelper
 
         /// <summary>
         /// Ensures achievementsEnabled is true. Returns true if we had to flip it.
-        /// Also logs clearly when we detect a BAD flip to false.
+        /// Logs clearly for a BAD flip to false.
         /// </summary>
         private static bool ForceEnableIfNeeded(string source)
         {
@@ -105,7 +112,7 @@ namespace AchievementHelper
 
             if (!pm.achievementsEnabled)
             {
-                // This indicates the game or another mod flipped it OFF.
+                // Indicates if the game or another mod flips it OFF.
                 Mod.log.Warn($"{source}: Detected achievementsEnabled == FALSE (this disables Steam/PDX achievements). Forcing TRUE.");
                 pm.achievementsEnabled = true;
                 return true;

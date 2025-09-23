@@ -82,6 +82,13 @@ namespace AchievementHelper
             // Expose Options UI (after locales are registered)
             m_Settings.RegisterInOptionsUI();
 
+            // After settings are created
+            if (AchievementsBridge.TryBuildLists(out var avail, out var done))
+            {
+                m_Settings.SetAchievementLists(avail, done);
+            }
+
+
             // Run our system after the game’s achievement trigger system
             updateSystem.UpdateAfter<AchievementHelperSystem, AchievementTriggerSystem>(SystemUpdatePhase.MainLoop);
 
