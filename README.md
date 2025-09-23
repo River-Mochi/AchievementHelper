@@ -4,6 +4,7 @@
 - Keep achievements working in Cities Skylines II even when the game is started with mods.
 - Active mods (not assets) will normally disqualify a save game for acheivement completion.
 - You still need to complete the tasks to get the [achievement](https://cs2.paradoxwikis.com/Achievements), this enables the chance to get them.
+- City switching: checks each time a city finishes loading, so works even when switching saves.
 
 ## Behavior
 - Toggle ☑ lets players disable the mod even if it's installed.
