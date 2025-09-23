@@ -6,7 +6,7 @@ using Colossal.Serialization.Entities; // Purpose enum
 namespace AchievementHelper
 {
     /// <summary>
-    /// Re-enables achievements after a load and keeps them TRUE during a short assert window.
+    /// Re-enables achievements after city loads and keeps them TRUE during a short assert window.
     /// Window auto-ends early after some consecutive stable frames.
     /// </summary>
     [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
@@ -14,8 +14,8 @@ namespace AchievementHelper
     {
         // --- Tunables ---
         private const int kAssertFrames = 600; // ~10s @ 60 FPS; scales with FPS
-        private const int kStableFramesToExit = 30;  // early-exit once we see this many frames already TRUE
-        private const bool kWatchdogAfterWindow = false; // set true only if you see very late flips in the wild
+        private const int kStableFramesToExit = 90;  // 90 (~ 1.5s) early-exit once we see this many frames already TRUE
+        private const bool kWatchdogAfterWindow = false; // set true only if we see very late flips in the wild
 
         // --- State ---
         private int m_FramesLeft;
@@ -81,7 +81,7 @@ namespace AchievementHelper
 
                 // Low-noise heartbeat ~once per second at 60 FPS
                 if (m_FramesLeft % 60 == 0)
-                    Mod.log.Debug($"Asserting… {m_FramesLeft} frames left (stable={m_StableTrueFrames})");
+                    Mod.log.Info($"Asserting… {m_FramesLeft} frames left (stable={m_StableTrueFrames})");
             }
             else if (kWatchdogAfterWindow)
             {
@@ -99,7 +99,7 @@ namespace AchievementHelper
             var pm = PlatformManager.instance;
             if (pm == null)
             {
-                Mod.log.Debug($"{source}: PlatformManager.instance == null; skip");
+                Mod.log.Info($"{source}: PlatformManager.instance == null; skip");
                 return false;
             }
 

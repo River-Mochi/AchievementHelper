@@ -74,6 +74,11 @@
 			<Private>false</Private>
 		</Reference>
 
+		<Reference Include="Colossal.PSI.Common">
+			<HintPath>$(ManagedPath)\Colossal.PSI.Common.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
+
 		<Reference Include="Unity.InputSystem">
 			<Private>false</Private>
 		</Reference>

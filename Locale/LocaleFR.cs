@@ -4,12 +4,12 @@ using Colossal;
 namespace AchievementHelper
 {
     /// <summary>
-    /// English locale entries
+    /// French locale entries (fr-FR)
     /// </summary>
-    public class LocaleEN : IDictionarySource
+    public class LocaleFR : IDictionarySource
     {
         private readonly Settings m_Setting;
-        public LocaleEN(Settings setting) { m_Setting = setting; }
+        public LocaleFR(Settings setting) { m_Setting = setting; }
 
         public IEnumerable<KeyValuePair<string, string>> ReadEntries(
             IList<IDictionaryEntryError> errors, Dictionary<string, int> indexCounts)
@@ -20,23 +20,23 @@ namespace AchievementHelper
                 { m_Setting.GetSettingsLocaleID(), Mod.Name },
 
                 // One section/tab
-                { m_Setting.GetOptionTabLocaleID(Settings.Section), "Main" },
+                { m_Setting.GetOptionTabLocaleID(Settings.Section), "Principal" },
 
                 // Groups
-                { m_Setting.GetOptionGroupLocaleID(Settings.MainGroup),  "Settings" },
-                { m_Setting.GetOptionGroupLocaleID(Settings.AboutGroup), "About" },
+                { m_Setting.GetOptionGroupLocaleID(Settings.MainGroup),  "Paramètres" },
+                { m_Setting.GetOptionGroupLocaleID(Settings.AboutGroup), "À propos" },
 
                 // Toggle
-                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.EnableAchievements)), "Enable achievements" },
+                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.EnableAchievements)), "Activer les succès" },
                 { m_Setting.GetOptionDescLocaleID(nameof(Settings.EnableAchievements)),
-                  "When ON (default), re-enables achievements while using mods and protects the flag during loading." },
+                  "Quand ACTIVÉ (par défaut), réactive les succès avec des mods et protège l’état pendant le chargement." },
 
                 // About fields
                 { m_Setting.GetOptionLabelLocaleID(nameof(Settings.NameDisplay)), "Mod" },
-                { m_Setting.GetOptionDescLocaleID(nameof(Settings.NameDisplay)),  "Display name of this mod." },
+                { m_Setting.GetOptionDescLocaleID(nameof(Settings.NameDisplay)),  "Nom du mod." },
 
                 { m_Setting.GetOptionLabelLocaleID(nameof(Settings.VersionDisplay)), "Version" },
-                { m_Setting.GetOptionDescLocaleID(nameof(Settings.VersionDisplay)), "Current mod version." },
+                { m_Setting.GetOptionDescLocaleID(nameof(Settings.VersionDisplay)), "Version actuelle du mod." },
             };
         }
 
