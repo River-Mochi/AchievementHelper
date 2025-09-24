@@ -42,14 +42,39 @@
 | `GameSystemBase` | Base class | to hook game lifecycle and `OnUpdate()`. |
 | `GameSystemBase.OnGameLoadingComplete(Purpose, GameMode)` | Method | Best moment to start short assert window. |
 | `GameSystemBase.OnUpdate()` | Method | Runs every frame; we enforce during the window. |
-| `Colossal.PSI.Common.PlatformManager.instance` | Singleton | Holds `achievementsEnabled` |
+| `Colossal.PSI.Common.PlatformManager.instance` | Singleton | Holds `achievementsEnabled`. |
 | `PlatformManager.achievementsEnabled : bool` | Field/prop | single flag that disables/enables achievements backends. |
 | `LogManager.GetLogger(...).SetShowsErrorsInUI(false)` | Logging | Traceable uses \Logs\modName.log |
 | `GameManager.instance.localizationManager.AddSource("en-US", new LocaleEN(...))` | Localization | Register English strings. |
 | `ModSetting` + `SettingsUI*` attributes | Settings UI | build checkbox toggles & Options menu without a custom UI. |
 | `AssetDatabase.global.LoadSettings(modName, setting, new Setting(mod))` | Settings | Persist user settings between sessions. |
+| `Game.UI.InGame.AchievementsUISystem` | UISystemBase | Builds the Achievements tab UI, wires bindings. |
+| `AchievementsUISystem.GetAchievementTabStatus()` | Method | Decides which warning state (Available, Hidden, ModsDisabled, OptionsDisabled) is shown. |
+| `GetterValueBinding<int>("achievements", "achievementTabStatus", ...)` | Binding | Exposes tab status to the UI. |
+| `IAchievement` / `PlatformManager.instance.EnumerateAchievements()` | API | Enumerates names, descriptions, progress, and icons. |
+| `_c.Menu.ACHIEVEMENTS_WARNING_*` keys | Localization keys | Text for warning messages (“disabled because mods…”, etc.). |
+| `Media/Game/Achievements/*.png` | Assets | Icons used in the Achievements tab. |
 
 > **Note:** Game code includes `Colossal.PSI.Common.AchievementsHelper` (plural). Our namespace `AchievementHelper` (singular) is distinct; no conflict.
+
+---
+
+## UI / Localization Hooks
+
+- Warning messages in the Achievements tab are **not hard-coded strings**; they’re pulled from localization keys:
+  - `_c.Menu.ACHIEVEMENTS_WARNING_MODS`
+  - `_c.Menu.ACHIEVEMENTS_WARNING_OPTIONS`
+  - `_c.Menu.ACHIEVEMENTS_WARNING_DEBUGMENU`
+  - (plus PlayStation variants, not relevant on PC)
+
+- **Override strategy:** Provide a replacement localization source (e.g., via `MemoryLocalizationSource`) that redefines those keys. This replaces the in-game warning without patching `AchievementsUISystem` directly.
+
+- **Optional hide strategy:** Add a tiny CSS asset to hide the warning element if desired. This avoids Harmony but removes the banner visually.
+
+- **Future extension:** Enumerating `IAchievement` objects lets the mod display a custom Achievements panel if needed (names, descriptions, progress, icons are all available).
+
+---
+
 
 **Performance**
 - While active: 1–2 property checks per frame for at most ~10s (or until early exit).

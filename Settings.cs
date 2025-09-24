@@ -1,62 +1,75 @@
 using System.Collections.Generic;
-using Colossal.IO.AssetDatabase;
-using Game.Modding;
-using Game.Settings;
+using System.Linq;                    // ToArray
+using Colossal.IO.AssetDatabase;      // FileLocation
+using Game.Modding;                   // IMod
+using Game.Settings;                  // ModSetting + UI attributes
 
 namespace AchievementHelper
 {
     [FileLocation("AchievementHelper")]
-    [SettingsUIGroupOrder(MainGroup, AchievementsAvailableGroup, AchievementsCompletedGroup, AboutGroup)]
-    [SettingsUIShowGroupName(MainGroup, AchievementsAvailableGroup, AchievementsCompletedGroup, AboutGroup)]
+    [SettingsUIGroupOrder(MainGroup, NotCompleteGroup, CompletedGroup)]
+    [SettingsUIShowGroupName(MainGroup, NotCompleteGroup, CompletedGroup)]
     public class Settings : ModSetting
     {
-        public const string Section = "Main";
+        // ---- Tabs ----
+        public const string Section = "Settings"; // main tab
+        public const string AboutSection = "About";    // second tab
+        public const string DebugSection = "Debug";    // (placeholder) third tab
+
+        // ---- Groups shown on the "Settings" tab ----
         public const string MainGroup = "Settings";
-        public const string AchievementsAvailableGroup = "Available";
-        public const string AchievementsCompletedGroup = "Completed";
-        public const string AboutGroup = "About";
+        public const string NotCompleteGroup = "Not Complete";
+        public const string CompletedGroup = "Completed";
 
         public Settings(IMod mod) : base(mod) { }
 
-        // Toggle at top
+        // Toggle at the top of the Settings tab
         [SettingsUISection(Section, MainGroup)]
         public bool EnableAchievements { get; set; } = true;
 
-        // --- Achievements lists (read-only text blocks) ---
-        private string m_AvailableText = "—";
+        // Read-only lists (one achievement per line with • bullets).
+        private string m_NotCompleteText = "—";
         private string m_CompletedText = "—";
 
-        [SettingsUISection(Section, AchievementsAvailableGroup)]
-        public string AvailableList => m_AvailableText;
+        [SettingsUISection(Section, NotCompleteGroup)]
+        public string NotCompleteList => m_NotCompleteText;
 
-        [SettingsUISection(Section, AchievementsCompletedGroup)]
+        [SettingsUISection(Section, CompletedGroup)]
         public string CompletedList => m_CompletedText;
 
-        // Called by our code to (re)populate the two lists.
-        public void SetAchievementLists(IEnumerable<string> available, IEnumerable<string> completed)
+        /// <summary>Called by <c>Mod.cs</c> after it builds the lists.</summary>
+        public void SetAchievementLists(IEnumerable<string> notComplete, IEnumerable<string> completed)
         {
-            static string JoinLines(IEnumerable<string> lines)
+            static string BulletLines(IEnumerable<string> lines)
             {
-                // bullet list; Settings UI renders plain text
                 var arr = lines as string[] ?? lines.ToArray();
-                return arr.Length == 0 ? "—" : "• " + string.Join("\n• ", arr);
+                // Show one name per line with a bullet.
+                return arr.Length == 0 ? "—" : "• " + string.Join("\r\n• ", arr);
             }
 
-            m_AvailableText = JoinLines(available);
-            m_CompletedText = JoinLines(completed);
+            m_NotCompleteText = BulletLines(notComplete);
+            m_CompletedText = BulletLines(completed);
         }
 
-        // About — read-only displays
-        [SettingsUISection(Section, AboutGroup)]
+        // ---- About tab (read-only info) ----
+        [SettingsUISection(AboutSection, MainGroup)]
         public string NameDisplay => Mod.Name;
 
-        [SettingsUISection(Section, AboutGroup)]
+        [SettingsUISection(AboutSection, MainGroup)]
         public string VersionDisplay => Mod.VersionShort;
+
+        // Simple text “link” for now (buttons vary by SDK version; we’ll add the real button once confirmed)
+        [SettingsUISection(AboutSection, MainGroup)]
+        public string AchievementsWiki => "https://cs2.paradoxwikis.com/Achievements";
+
+        // ---- Debug tab (placeholder; interactive controls come next) ----
+        [SettingsUISection(DebugSection, MainGroup)]
+        public string DebugNote => "Reset controls will appear here in a later build.";
 
         public override void SetDefaults()
         {
             EnableAchievements = true;
-            m_AvailableText = "—";
+            m_NotCompleteText = "—";
             m_CompletedText = "—";
         }
     }

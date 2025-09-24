@@ -1,27 +1,24 @@
-using System.Reflection;            // Assembly attributes
-using Colossal;                     // IDictionarySource
-using Colossal.IO.AssetDatabase;    // AssetDatabase
-using Colossal.Logging;             // ILog
-using Game;                         // UpdateSystem, SystemUpdatePhase
-using Game.Achievements;            // AchievementTriggerSystem
-using Game.Modding;                 // IMod
-using Game.SceneFlow;               // GameManager
+using System.Reflection;               // Assembly attributes
+using Colossal;                        // IDictionarySource
+using Colossal.IO.AssetDatabase;       // AssetDatabase
+using Colossal.Logging;                // ILog, LogManager
+using Game;                            // UpdateSystem
+using Game.Achievements;               // AchievementTriggerSystem
+using Game.Modding;                    // IMod
+using Game.SceneFlow;                  // GameManager
 
 namespace AchievementHelper
 {
     public sealed class Mod : IMod
     {
-        // ---- Logging ----
-        // Writes to Logs/AchievementHelper.log (no UI popups)
+        // Logs/AchievementHelper.log
         public static readonly ILog log =
             LogManager.GetLogger("AchievementHelper").SetShowsErrorsInUI(false);
 
-        // ---- Settings (shared) ----
         public static Settings? Settings { get; private set; }
 
-        // ---- Version / name (from .csproj assembly attributes) ----
+        // Version/name pulled from assembly (.csproj)
         private static readonly Assembly s_Asm = Assembly.GetExecutingAssembly();
-
         public static readonly string Name =
             s_Asm.GetCustomAttribute<AssemblyTitleAttribute>()?.Title ?? "Achievement Helper";
 
@@ -46,56 +43,42 @@ namespace AchievementHelper
                 s_BannerLogged = true;
             }
 
+            // Settings instance (also stashed for easy access by other classes)
             m_Settings = new Settings(this);
             Settings = m_Settings;
 
-            // --- ADD LOCALES ---
+            // --- Locales (register BEFORE showing Options UI) ---
             IDictionarySource en = new LocaleEN(m_Settings);
-            IDictionarySource fr = new LocaleFR(m_Settings);
-            IDictionarySource es = new LocaleES(m_Settings);
-            IDictionarySource de = new LocaleDE(m_Settings);
-            IDictionarySource it = new LocaleIT(m_Settings);
-            IDictionarySource zhCN = new LocaleZH_CN(m_Settings);   // Simplified Chinese
-            IDictionarySource ja = new LocaleJA(m_Settings);        // Japanese
-            IDictionarySource ko = new LocaleKO(m_Settings);        // Korean
-            IDictionarySource vi = new LocaleVI(m_Settings);        // Vietnamese
-
-            // Register BEFORE showing Options UI
             AddLocale("en-US", en);
-            AddLocale("fr-FR", fr);
-            AddLocale("es-ES", es);
-            AddLocale("de-DE", de);
-            AddLocale("it-IT", it);
-            AddLocale("ja-JP", ja);
-            AddLocale("ko-KR", ko);
-            AddLocale("vi-VN", vi);
 
-            // Register ZH under common ids so LocalizationManager can find match
-            AddLocale("zh-HANS", zhCN);     // log shows this is used
-            AddLocale("zh-CN", zhCN);       // common Steam locale Simplified Chinese
-            AddLocale("zh-Hans", zhCN);     // common alias (case variant)
-            AddLocale("zh-Hans-CN", zhCN);  // common alias (region variant)
+            // If you added other locale classes, you can add them here later:
+            // AddLocale("fr-FR", new LocaleFR(m_Settings));
+            // AddLocale("de-DE", new LocaleDE(m_Settings));
+            // AddLocale("es-ES", new LocaleES(m_Settings));
+            // AddLocale("it-IT", new LocaleIT(m_Settings));
+            // AddLocale("zh-HANS", new LocaleZH_CN(m_Settings));
+            // AddLocale("zh-CN",   new LocaleZH_CN(m_Settings));
+            // AddLocale("ja-JP",   new LocaleJA(m_Settings));
+            // AddLocale("ko-KR",   new LocaleKO(m_Settings));
+            // AddLocale("vi-VN",   new LocaleVI(m_Settings));
 
             // Load saved settings (or defaults on first run)
             AssetDatabase.global.LoadSettings("AchievementHelper", m_Settings, new Settings(this));
 
-            // Expose Options UI (after locales are registered)
-            m_Settings.RegisterInOptionsUI();
-
-            // After settings are created
-            if (AchievementsBridge.TryBuildLists(out var avail, out var done))
+            // Build the Available/Completed lists once at load
+            if (AchievementsBridge.TryBuildLists(out var available, out var completed))
             {
-                m_Settings.SetAchievementLists(avail, done);
+                m_Settings.SetAchievementLists(available, completed);
             }
 
+            // Expose Options UI (after locales are registered)
+            m_Settings.RegisterInOptionsUI();
 
             // Run our system after the game’s achievement trigger system
             updateSystem.UpdateAfter<AchievementHelperSystem, AchievementTriggerSystem>(SystemUpdatePhase.MainLoop);
 
-            // Optional: log active locale at load
             var lm = GameManager.instance?.localizationManager;
-            if (lm != null)
-                log.Info($"[Locale] Active: {lm.activeLocaleId}");
+            if (lm != null) log.Info($"[Locale] Active: {lm.activeLocaleId}");
         }
 
         public void OnDispose()

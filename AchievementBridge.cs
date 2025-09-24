@@ -1,16 +1,15 @@
 using System;
 using System.Collections.Generic;
-using Colossal.PSI.Common;   // PlatformManager
-using Game.SceneFlow;        // GameManager (for localization if you later resolve names)
+using Colossal.PSI.Common;  // PlatformManager, AchievementsHelper, AchievementId, AchievementAttribute
 
 namespace AchievementHelper
 {
+    /// <summary>
+    /// Tiny helper that asks the game for its achievements, splits them into
+    /// Available vs Completed, and returns human-ish names (best-effort).
+    /// </summary>
     internal static class AchievementsBridge
     {
-        /// <summary>
-        /// Fill 'available' (locked) and 'completed' (unlocked) with names.
-        /// Returns true if real data was gathered, false if not available on this build.
-        /// </summary>
         public static bool TryBuildLists(out List<string> available, out List<string> completed)
         {
             available = new List<string>();
@@ -20,27 +19,39 @@ namespace AchievementHelper
             {
                 var pm = PlatformManager.instance;
                 if (pm == null)
+                {
+                    Mod.log.Warn("AchievementsBridge: PlatformManager.instance is null.");
                     return false;
+                }
 
-                // --- TODO: Wire to the real APIs you see in dnSpyEX ---
-                // Typical pattern you’ll find:
-                //   foreach (var ach in pm.achievementsBackend.GetAll()) {
-                //       bool unlocked = pm.achievementsBackend.IsUnlocked(ach.Id);
-                //       string displayName = Localize(ach.NameKey) or ach.DisplayName;
-                //       (unlocked ? completed : available).Add(displayName);
-                //   }
-                //
-                // Keep it defensive: if you only get IDs, add IDs. If you only have keys, localize via
-                // GameManager.instance.localizationManager?.Get(...)
-                //
-                // For now we return false so the caller knows it’s not wired yet.
-                return false;
+                // Static map id -> metadata (includes internalName)
+                var map = AchievementsHelper.InitializeAchievements(); // may be null in rare cases
+
+                foreach (var a in pm.EnumerateAchievements())
+                {
+                    string label = ResolveName(a.id, map);
+                    if (a.achieved) completed.Add(label);
+                    else available.Add(label);
+                }
+
+                available.Sort(StringComparer.OrdinalIgnoreCase);
+                completed.Sort(StringComparer.OrdinalIgnoreCase);
+                return true;
             }
             catch (Exception ex)
             {
-                Mod.log.Warn($"Achievements enumeration failed: {ex.Message}");
+                Mod.log.Warn($"AchievementsBridge: {ex.GetType().Name}: {ex.Message}");
                 return false;
             }
+        }
+
+        private static string ResolveName(AchievementId id, Dictionary<AchievementId, AchievementAttribute> map)
+        {
+            if (map != null && map.TryGetValue(id, out var attr) && !string.IsNullOrEmpty(attr.internalName))
+                return attr.internalName;
+
+            // Fallback—show id as string if no metadata
+            return id.ToString();
         }
     }
 }
