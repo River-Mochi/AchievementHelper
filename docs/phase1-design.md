@@ -2,7 +2,7 @@
 
 ## Goal - Phase 1
 - Keep achievements working in Cities Skylines II even when the game is started with mods.
-- Active mods (not assets) will normally disqualify a save game for acheivement completion.
+- Active mods (not assets) will normally disqualify a save game for achievement completion.
 
 ## Options Menu
 - Toggle ☑ lets players disable the mod even if it's still installed.
@@ -53,7 +53,10 @@
 | `GetterValueBinding<int>("achievements", "achievementTabStatus", ...)` | Binding | Exposes tab status to the UI. |
 | `IAchievement` / `PlatformManager.instance.EnumerateAchievements()` | API | Enumerates names, descriptions, progress, and icons. |
 | `_c.Menu.ACHIEVEMENTS_WARNING_*` keys | Localization keys | Text for warning messages (“disabled because mods…”, etc.). |
-| `Media/Game/Achievements/*.png` | Assets | Icons used in the Achievements tab. |
+| `Media/Game/Achievements/*.png` | Assets | Icons used in the Achievements tab. Color = achieved; `_locked` = grayscale locked state. |
+| `CityConfigurationSystem.usedMods.Count` | Field | Used by `AchievementsUISystem.GetAchievementTabStatus()` to decide ModsDisabled status. |
+| `Achievements` (static IDs) | Data | Contains all achievement IDs. |
+| `AchievementTriggerSystem` | System | Enforces progress, also ANDs `achievementsEnabled` with mod/option flags on load. |
 
 > **Note:** Game code includes `Colossal.PSI.Common.AchievementsHelper` (plural). Our namespace `AchievementHelper` (singular) is distinct; no conflict.
 
@@ -68,13 +71,14 @@
   - (plus PlayStation variants, not relevant on PC)
 
 - **Override strategy:** Provide a replacement localization source (e.g., via `MemoryLocalizationSource`) that redefines those keys. This replaces the in-game warning without patching `AchievementsUISystem` directly.
+  - Example override text: `“Achievements are enabled by Achievement Helper.”`
+  - To hide entirely, set the override value to an empty string `""`.
 
 - **Optional hide strategy:** Add a tiny CSS asset to hide the warning element if desired. This avoids Harmony but removes the banner visually.
 
 - **Future extension:** Enumerating `IAchievement` objects lets the mod display a custom Achievements panel if needed (names, descriptions, progress, icons are all available).
 
 ---
-
 
 **Performance**
 - While active: 1–2 property checks per frame for at most ~10s (or until early exit).
@@ -126,5 +130,3 @@ ForceEnableIfNeeded(source):
     PlatformManager.instance.achievementsEnabled = true
     return true
   return false
-
-
