@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Colossal;
 
-namespace AchievementHelper
+namespace AchievementFixer
 {
     /// <summary>English strings for the Options UI (en-US).</summary>
     public class LocaleEN : IDictionarySource

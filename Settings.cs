@@ -8,9 +8,9 @@ using Game.Settings;
 using Game.UI.Widgets;            // DropdownItem<T>
 using UnityEngine;
 
-namespace AchievementHelper
+namespace AchievementFixer
 {
-    [FileLocation("AchievementHelper")]
+    [FileLocation("AchievementFixer")]
     [SettingsUIGroupOrder(MainInfoGroup)]
     [SettingsUIShowGroupName(MainInfoGroup)]
     public class Settings : ModSetting
@@ -172,6 +172,7 @@ namespace AchievementHelper
             var pm = PlatformManager.instance;
             if (pm == null) return Array.Empty<DropdownItem<string>>();
 
+            // Get metadata (internal names)
             var meta = AchievementsHelper.InitializeAchievements();
             var items = new List<DropdownItem<string>>();
 

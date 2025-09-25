@@ -1,4 +1,4 @@
-# Achievement Helper
+# Achievement Fixer
 
 ## Goal - Phase 1
 - Keep achievements working in Cities Skylines II even when the game is started with mods.
@@ -26,12 +26,12 @@
 
 ## Project Layout (files & classes)
 
-- **Namespace:** `AchievementHelper`
+- **Namespace:** `AchievementFixer`
 - **Files:**
   - `Mod.cs` — main mod entry point, logs, loads settings, adds `LocaleEN`, and registers the System to run.
   - `Settings.cs` — `EnableAchievements` toggle (default ON)
   - `Locale/LocaleEN.cs` — English strings for Settings UI.
-  - `AchievementHelperSystem.cs` — after loading, checks again to ensure achievements are still enabled (inherits `GameSystemBase`).
+  - `AchievementFixerSystem.cs` — after loading, checks again to ensure achievements are still enabled (inherits `GameSystemBase`).
 
 ---
 
@@ -58,20 +58,19 @@
 | `Achievements` (static IDs) | Data | Contains all achievement IDs. |
 | `AchievementTriggerSystem` | System | Enforces progress, also ANDs `achievementsEnabled` with mod/option flags on load. |
 
-> **Note:** Game code includes `Colossal.PSI.Common.AchievementsHelper` (plural). Our namespace `AchievementHelper` (singular) is distinct; no conflict.
+> **Note:** Game code includes `Colossal.PSI.Common.AchievementsHelper` (plural). Our namespace `AchievementFixer` (singular) is distinct; no conflict.
 
 ---
 
 ## UI / Localization Hooks
 
 - Warning messages in the Achievements tab are **not hard-coded strings**; they’re pulled from localization keys:
-  - `_c.Menu.ACHIEVEMENTS_WARNING_MODS`
-  - `_c.Menu.ACHIEVEMENTS_WARNING_OPTIONS`
-  - `_c.Menu.ACHIEVEMENTS_WARNING_DEBUGMENU`
+  - `Menu.ACHIEVEMENTS_WARNING_MODS`
+  - `Menu.ACHIEVEMENTS_WARNING_OPTIONS`
   - (plus PlayStation variants, not relevant on PC)
 
 - **Override strategy:** Provide a replacement localization source (e.g., via `MemoryLocalizationSource`) that redefines those keys. This replaces the in-game warning without patching `AchievementsUISystem` directly.
-  - Example override text: `“Achievements are enabled by Achievement Helper.”`
+  - Example override text: `“Achievements are enabled by Achievement Fixer.”`
   - To hide entirely, set the override value to an empty string `""`.
 
 - **Optional hide strategy:** Add a tiny CSS asset to hide the warning element if desired. This avoids Harmony but removes the banner visually.

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Colossal;
 
-namespace AchievementHelper
+namespace AchievementFixer
 {
     /// <summary>
     /// Vietnamese locale entries (vi-VN)
@@ -16,7 +16,7 @@ namespace AchievementHelper
         {
             return new Dictionary<string, string>
             {
-                { m_Setting.GetSettingsLocaleID(), "Achievement Helper" },
+                { m_Setting.GetSettingsLocaleID(), "Achievement Fixer" },
 
                 { m_Setting.GetOptionTabLocaleID(Settings.Section),      "Cài đặt" },
                 { m_Setting.GetOptionTabLocaleID(Settings.AboutSection), "Giới thiệu" },

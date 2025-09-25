@@ -13,12 +13,12 @@
 		<InformationalVersion>$(Version)</InformationalVersion>
 
 		<!-- Product metadata (shows in Windows + About UI) -->
-		<AssemblyTitle>Achievement Helper</AssemblyTitle>
-		<AssemblyName>AchievementHelper</AssemblyName>
-		<Product>Achievement Helper</Product>
+		<AssemblyTitle>Achievement Fixer</AssemblyTitle>
+		<AssemblyName>AchievementFixer</AssemblyName>
+		<Product>Achievement Fixer</Product>
 
 		<!-- Namespace clarity -->
-		<RootNamespace>AchievementHelper</RootNamespace>
+		<RootNamespace>AchievementFixer</RootNamespace>
 
 		<!-- Keep NREs away -->
 		<Nullable>enable</Nullable>

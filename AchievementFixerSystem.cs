@@ -3,13 +3,13 @@ using Colossal.Serialization.Entities;  // Purpose enum
 using Game;                             // GameSystemBase, GameMode
 using Unity.Entities;                   // WorldSystemFilter
 
-namespace AchievementHelper
+namespace AchievementFixer
 {
     /// <summary>
     /// Keeps achievements enabled after load with a short assert window.
     /// </summary>
     [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
-    public partial class AchievementHelperSystem : GameSystemBase
+    public partial class AchievementFixerSystem : GameSystemBase
     {
         private const int kAssertFrames = 600;      // ~10s @60 FPS
         private const int kStableFramesToExit = 60; // early-exit once TRUE for this many frames
@@ -22,7 +22,7 @@ namespace AchievementHelper
             base.OnCreate();
             m_FramesLeft = 0;
             m_StableTrueFrames = 0;
-            Mod.log.Info("AchievementHelperSystem created");
+            Mod.log.Info("AchievementFixerSystem created");
         }
 
         protected override void OnGameLoadingComplete(Purpose purpose, GameMode mode)

@@ -4,24 +4,23 @@ using System.Reflection;
 using Colossal;                        // IDictionarySource
 using Colossal.IO.AssetDatabase;       // AssetDatabase
 using Colossal.Logging;                // ILog, LogManager
-using Colossal.PSI.Common;             // AchievementsHelper
 using Game;                            // UpdateSystem
 using Game.Achievements;               // AchievementTriggerSystem
 using Game.Modding;                    // IMod
 using Game.SceneFlow;                  // GameManager
 
-namespace AchievementHelper
+namespace AchievementFixer
 {
     public sealed class Mod : IMod
     {
         public static readonly ILog log =
-            LogManager.GetLogger("AchievementHelper").SetShowsErrorsInUI(false);
+            LogManager.GetLogger("AchievementFixer").SetShowsErrorsInUI(false);
 
         public static Settings? Settings { get; private set; }
 
         private static readonly Assembly s_Asm = Assembly.GetExecutingAssembly();
         public static readonly string Name =
-            s_Asm.GetCustomAttribute<AssemblyTitleAttribute>()?.Title ?? "Achievement Helper";
+            s_Asm.GetCustomAttribute<AssemblyTitleAttribute>()?.Title ?? "Achievement Fixer";
 
         private static readonly string s_InfoRaw =
             s_Asm.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? "1.0.0";
@@ -64,7 +63,7 @@ namespace AchievementHelper
 
 
             // Load any saved settings (none currently)
-            AssetDatabase.global.LoadSettings("AchievementHelper", settings, new Settings(this));
+            AssetDatabase.global.LoadSettings("AchievementFixer", settings, new Settings(this));
 
             // Options UI
             settings.RegisterInOptionsUI();
@@ -72,8 +71,8 @@ namespace AchievementHelper
             // Hide Achievement warning @ mods strings
             TryInstallWarningOverrideSource();
 
-            // Keep achievements enabled: run after achievement trigger system
-            updateSystem.UpdateAfter<AchievementHelperSystem, AchievementTriggerSystem>(SystemUpdatePhase.MainLoop);
+            // Keep enabled: run after achievement trigger system
+            updateSystem.UpdateAfter<AchievementFixerSystem, AchievementTriggerSystem>(SystemUpdatePhase.MainLoop);
 
             var lm = GameManager.instance?.localizationManager;
             if (lm != null) log.Info($"[Locale] Active: {lm.activeLocaleId}");

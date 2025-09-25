@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Colossal;
 
-namespace AchievementHelper
+namespace AchievementFixer
 {
     /// <summary>
     /// German locale (de-DE)
@@ -16,7 +16,7 @@ namespace AchievementHelper
         {
             return new Dictionary<string, string>
             {
-                { m_Setting.GetSettingsLocaleID(), "Achievement Helper" },
+                { m_Setting.GetSettingsLocaleID(), "Achievement Fixer" },
 
                 { m_Setting.GetOptionTabLocaleID(Settings.Section),      "Einstellungen" },
                 { m_Setting.GetOptionTabLocaleID(Settings.AboutSection), "Info"          },
