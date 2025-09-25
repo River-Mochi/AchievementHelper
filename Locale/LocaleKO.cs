@@ -16,27 +16,38 @@ namespace AchievementHelper
         {
             return new Dictionary<string, string>
             {
-                // Mod name in Options menu
-                { m_Setting.GetSettingsLocaleID(), Mod.Name },
+                { m_Setting.GetSettingsLocaleID(), "Achievement Helper" },
 
-                // One section/tab
-                { m_Setting.GetOptionTabLocaleID(Settings.Section), "메인" },
+                { m_Setting.GetOptionTabLocaleID(Settings.Section),      "설정" },
+                { m_Setting.GetOptionTabLocaleID(Settings.AboutSection), "정보" },
+                { m_Setting.GetOptionTabLocaleID(Settings.DebugSection), "디버그" },
 
-                // Groups
-                { m_Setting.GetOptionGroupLocaleID(Settings.MainGroup),  "설정" },
-                { m_Setting.GetOptionGroupLocaleID(Settings.AboutGroup), "정보" },
+                { m_Setting.GetOptionGroupLocaleID(Settings.MainGroup),        "설정" },
+                { m_Setting.GetOptionGroupLocaleID(Settings.NotCompleteGroup), "미달성" },
+                { m_Setting.GetOptionGroupLocaleID(Settings.CompletedGroup),   "달성됨" },
 
-                // Toggle
                 { m_Setting.GetOptionLabelLocaleID(nameof(Settings.EnableAchievements)), "도전과제 활성화" },
                 { m_Setting.GetOptionDescLocaleID(nameof(Settings.EnableAchievements)),
-                  "기본적으로 켜짐. 모드 사용 시에도 도전과제를 다시 활성화하고 로딩 중 상태를 보호합니다." },
+                  "기본값 ON일 때, 모드를 사용해도 도전과제가 가능하며 로딩 중에도 유지합니다." },
 
-                // About fields
-                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.NameDisplay)), "모드" },
-                { m_Setting.GetOptionDescLocaleID(nameof(Settings.NameDisplay)),  "이 모드의 표시 이름." },
+                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.NotCompleteList)), "미달성" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Settings.NotCompleteList)),  "아직 달성 가능한 도전과제." },
+
+                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.CompletedList)), "달성됨" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Settings.CompletedList)),  "이미 해금된 도전과제." },
+
+                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.NameDisplay)),    "Mod" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Settings.NameDisplay)),     "모드 표시 이름." },
 
                 { m_Setting.GetOptionLabelLocaleID(nameof(Settings.VersionDisplay)), "버전" },
-                { m_Setting.GetOptionDescLocaleID(nameof(Settings.VersionDisplay)), "현재 모드 버전." },
+                { m_Setting.GetOptionDescLocaleID(nameof(Settings.VersionDisplay)),  "현재 모드 버전." },
+
+         { m_Setting.GetOptionLabelLocaleID(nameof(Settings.OpenAchievementsWikiButton)), "Achievements wiki" },
+{ m_Setting.GetOptionDescLocaleID(nameof(Settings.OpenAchievementsWikiButton)),  "Open the CS2 achievements wiki in your browser." },
+
+
+                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.DebugNote)), "메모" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Settings.DebugNote)),  "개발 도구는 추후 추가됩니다." },
             };
         }
 

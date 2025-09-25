@@ -16,27 +16,39 @@ namespace AchievementHelper
         {
             return new Dictionary<string, string>
             {
-                // Mod name in Options menu
-                { m_Setting.GetSettingsLocaleID(), Mod.Name },
+                { m_Setting.GetSettingsLocaleID(), "Achievement Helper" },
 
-                // One section/tab
-                { m_Setting.GetOptionTabLocaleID(Settings.Section), "Principal" },
+                { m_Setting.GetOptionTabLocaleID(Settings.Section),      "Ajustes" },
+                { m_Setting.GetOptionTabLocaleID(Settings.AboutSection), "Acerca de" },
+                { m_Setting.GetOptionTabLocaleID(Settings.DebugSection), "Depuración" },
 
-                // Groups
-                { m_Setting.GetOptionGroupLocaleID(Settings.MainGroup),  "Ajustes" },
-                { m_Setting.GetOptionGroupLocaleID(Settings.AboutGroup), "Acerca de" },
+                { m_Setting.GetOptionGroupLocaleID(Settings.MainGroup),        "Ajustes" },
+                { m_Setting.GetOptionGroupLocaleID(Settings.NotCompleteGroup), "Sin completar" },
+                { m_Setting.GetOptionGroupLocaleID(Settings.CompletedGroup),   "Completados" },
 
-                // Toggle
                 { m_Setting.GetOptionLabelLocaleID(nameof(Settings.EnableAchievements)), "Activar logros" },
                 { m_Setting.GetOptionDescLocaleID(nameof(Settings.EnableAchievements)),
-                  "Cuando está ACTIVADO (por defecto), vuelve a habilitar los logros al usar mods y protege el estado durante la carga." },
+                  "Cuando está ACTIVADO (por defecto), permite logros con mods y lo mantiene durante la carga." },
 
-                // About fields
-                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.NameDisplay)), "Mod" },
-                { m_Setting.GetOptionDescLocaleID(nameof(Settings.NameDisplay)),  "Nombre del mod." },
+                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.NotCompleteList)), "Sin completar" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Settings.NotCompleteList)),  "Logros que aún puedes conseguir." },
+
+                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.CompletedList)), "Completados" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Settings.CompletedList)),  "Logros ya desbloqueados." },
+
+                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.NameDisplay)),    "Mod" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Settings.NameDisplay)),     "Nombre del mod." },
 
                 { m_Setting.GetOptionLabelLocaleID(nameof(Settings.VersionDisplay)), "Versión" },
-                { m_Setting.GetOptionDescLocaleID(nameof(Settings.VersionDisplay)), "Versión actual del mod." },
+                { m_Setting.GetOptionDescLocaleID(nameof(Settings.VersionDisplay)),  "Versión actual del mod." },
+
+
+                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.OpenAchievementsWikiButton)), "Achievements wiki" },
+{ m_Setting.GetOptionDescLocaleID(nameof(Settings.OpenAchievementsWikiButton)),  "Open the CS2 achievements wiki in your browser." },
+
+
+                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.DebugNote)), "Notas" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Settings.DebugNote)),  "Se añadirán herramientas de desarrollo." },
             };
         }
 

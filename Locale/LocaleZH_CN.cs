@@ -4,7 +4,7 @@ using Colossal;
 namespace AchievementHelper
 {
     /// <summary>
-    /// Simplified Chinese locale entries (zh-CN)
+    /// Simplified Chinese locale entries (zh-Hans / zh-CN)
     /// </summary>
     public class LocaleZH_CN : IDictionarySource
     {
@@ -16,27 +16,38 @@ namespace AchievementHelper
         {
             return new Dictionary<string, string>
             {
-                // Mod name in Options menu
-                { m_Setting.GetSettingsLocaleID(), Mod.Name },
+                { m_Setting.GetSettingsLocaleID(), "Achievement Helper" },
 
-                // One section/tab
-                { m_Setting.GetOptionTabLocaleID(Settings.Section), "主选项" },
+                { m_Setting.GetOptionTabLocaleID(Settings.Section),      "设置" },
+                { m_Setting.GetOptionTabLocaleID(Settings.AboutSection), "关于" },
+                { m_Setting.GetOptionTabLocaleID(Settings.DebugSection), "调试" },
 
-                // Groups
-                { m_Setting.GetOptionGroupLocaleID(Settings.MainGroup),  "设置" },
-                { m_Setting.GetOptionGroupLocaleID(Settings.AboutGroup), "关于" },
+                { m_Setting.GetOptionGroupLocaleID(Settings.MainGroup),        "设置" },
+                { m_Setting.GetOptionGroupLocaleID(Settings.NotCompleteGroup), "未完成" },
+                { m_Setting.GetOptionGroupLocaleID(Settings.CompletedGroup),   "已完成" },
 
-                // Toggle
                 { m_Setting.GetOptionLabelLocaleID(nameof(Settings.EnableAchievements)), "启用成就" },
                 { m_Setting.GetOptionDescLocaleID(nameof(Settings.EnableAchievements)),
-                  "开启（默认）时，在使用模组时重新启用成就，并在加载期间保护该状态。" },
+                  "开启（默认）后，使用模组时仍可获得成就，并在加载期间保持开启。" },
 
-                // About fields
-                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.NameDisplay)), "模组" },
-                { m_Setting.GetOptionDescLocaleID(nameof(Settings.NameDisplay)),  "此模组的显示名称。" },
+                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.NotCompleteList)), "未完成" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Settings.NotCompleteList)),  "仍可获得的成就。" },
+
+                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.CompletedList)), "已完成" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Settings.CompletedList)),  "已解锁的成就。" },
+
+                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.NameDisplay)),    "Mod" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Settings.NameDisplay)),     "Mod 的显示名称。" },
 
                 { m_Setting.GetOptionLabelLocaleID(nameof(Settings.VersionDisplay)), "版本" },
-                { m_Setting.GetOptionDescLocaleID(nameof(Settings.VersionDisplay)), "当前模组版本。" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Settings.VersionDisplay)),  "当前 Mod 版本。" },
+
+{ m_Setting.GetOptionLabelLocaleID(nameof(Settings.OpenAchievementsWikiButton)), "Achievements wiki" },
+{ m_Setting.GetOptionDescLocaleID(nameof(Settings.OpenAchievementsWikiButton)),  "Open the CS2 achievements wiki in your browser." },
+
+
+                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.DebugNote)), "说明" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Settings.DebugNote)),  "将来会添加开发工具。" },
             };
         }
 

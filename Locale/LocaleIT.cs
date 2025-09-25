@@ -16,31 +16,41 @@ namespace AchievementHelper
         {
             return new Dictionary<string, string>
             {
-                // Mod name in Options menu
-                { m_Setting.GetSettingsLocaleID(), Mod.Name },
+                { m_Setting.GetSettingsLocaleID(), "Achievement Helper" },
 
-                // One section/tab
-                { m_Setting.GetOptionTabLocaleID(Settings.Section), "Principale" },
+                { m_Setting.GetOptionTabLocaleID(Settings.Section),      "Impostazioni" },
+                { m_Setting.GetOptionTabLocaleID(Settings.AboutSection), "Informazioni" },
+                { m_Setting.GetOptionTabLocaleID(Settings.DebugSection), "Debug" },
 
-                // Groups
-                { m_Setting.GetOptionGroupLocaleID(Settings.MainGroup),  "Impostazioni" },
-                { m_Setting.GetOptionGroupLocaleID(Settings.AboutGroup), "Informazioni" },
+                { m_Setting.GetOptionGroupLocaleID(Settings.MainGroup),        "Impostazioni" },
+                { m_Setting.GetOptionGroupLocaleID(Settings.NotCompleteGroup), "Non completati" },
+                { m_Setting.GetOptionGroupLocaleID(Settings.CompletedGroup),   "Completati" },
 
-                // Toggle
                 { m_Setting.GetOptionLabelLocaleID(nameof(Settings.EnableAchievements)), "Abilita obiettivi" },
                 { m_Setting.GetOptionDescLocaleID(nameof(Settings.EnableAchievements)),
-                  "Quando ATTIVO (predefinito), riabilita gli obiettivi con le mod e protegge lo stato durante il caricamento." },
+                  "Quando ATTIVO (predefinito), consente gli obiettivi con mod e li mantiene attivi durante il caricamento." },
 
-                // About fields
-                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.NameDisplay)), "Mod" },
-                { m_Setting.GetOptionDescLocaleID(nameof(Settings.NameDisplay)),  "Nome visualizzato della mod." },
+                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.NotCompleteList)), "Non completati" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Settings.NotCompleteList)),  "Obiettivi ancora conseguibili." },
+
+                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.CompletedList)), "Completati" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Settings.CompletedList)),  "Obiettivi già sbloccati." },
+
+                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.NameDisplay)),    "Mod" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Settings.NameDisplay)),     "Nome visualizzato del mod." },
 
                 { m_Setting.GetOptionLabelLocaleID(nameof(Settings.VersionDisplay)), "Versione" },
-                { m_Setting.GetOptionDescLocaleID(nameof(Settings.VersionDisplay)), "Versione attuale della mod." },
+                { m_Setting.GetOptionDescLocaleID(nameof(Settings.VersionDisplay)),  "Versione attuale del mod." },
+
+        { m_Setting.GetOptionLabelLocaleID(nameof(Settings.OpenAchievementsWikiButton)), "Achievements wiki" },
+{ m_Setting.GetOptionDescLocaleID(nameof(Settings.OpenAchievementsWikiButton)),  "Open the CS2 achievements wiki in your browser." },
+
+
+                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.DebugNote)), "Note" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Settings.DebugNote)),  "Strumenti di sviluppo saranno aggiunti." },
             };
         }
 
         public void Unload() { }
     }
 }
-

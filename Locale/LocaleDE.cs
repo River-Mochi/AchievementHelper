@@ -4,7 +4,7 @@ using Colossal;
 namespace AchievementHelper
 {
     /// <summary>
-    /// German locale entries (de-DE)
+    /// German locale (de-DE)
     /// </summary>
     public class LocaleDE : IDictionarySource
     {
@@ -16,27 +16,38 @@ namespace AchievementHelper
         {
             return new Dictionary<string, string>
             {
-                // Mod name in Options menu
-                { m_Setting.GetSettingsLocaleID(), Mod.Name },
+                { m_Setting.GetSettingsLocaleID(), "Achievement Helper" },
 
-                // One section/tab
-                { m_Setting.GetOptionTabLocaleID(Settings.Section), "Haupt" },
+                { m_Setting.GetOptionTabLocaleID(Settings.Section),      "Einstellungen" },
+                { m_Setting.GetOptionTabLocaleID(Settings.AboutSection), "Info"          },
+                { m_Setting.GetOptionTabLocaleID(Settings.DebugSection), "Debug"         },
 
-                // Groups
-                { m_Setting.GetOptionGroupLocaleID(Settings.MainGroup),  "Einstellungen" },
-                { m_Setting.GetOptionGroupLocaleID(Settings.AboutGroup), "Info" },
+                { m_Setting.GetOptionGroupLocaleID(Settings.MainGroup),        "Einstellungen"    },
+                { m_Setting.GetOptionGroupLocaleID(Settings.NotCompleteGroup), "Nicht abgeschlossen" },
+                { m_Setting.GetOptionGroupLocaleID(Settings.CompletedGroup),   "Abgeschlossen"    },
 
-                // Toggle
                 { m_Setting.GetOptionLabelLocaleID(nameof(Settings.EnableAchievements)), "Erfolge aktivieren" },
                 { m_Setting.GetOptionDescLocaleID(nameof(Settings.EnableAchievements)),
-                  "Wenn EIN (Standard), werden Erfolge bei Verwendung von Mods wieder aktiviert und während des Ladens geschützt." },
+                  "Wenn EIN (Standard), ermöglicht Erfolge mit Mods und hält die Einstellung während des Ladens aktiv." },
 
-                // About fields
-                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.NameDisplay)), "Mod" },
-                { m_Setting.GetOptionDescLocaleID(nameof(Settings.NameDisplay)),  "Anzeigename des Mods." },
+                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.NotCompleteList)), "Nicht abgeschlossen" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Settings.NotCompleteList)),  "Noch erreichbare Erfolge." },
+
+                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.CompletedList)), "Abgeschlossen" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Settings.CompletedList)),  "Bereits freigeschaltete Erfolge." },
+
+                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.NameDisplay)),    "Mod" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Settings.NameDisplay)),     "Anzeigename des Mods." },
 
                 { m_Setting.GetOptionLabelLocaleID(nameof(Settings.VersionDisplay)), "Version" },
-                { m_Setting.GetOptionDescLocaleID(nameof(Settings.VersionDisplay)), "Aktuelle Mod-Version." },
+                { m_Setting.GetOptionDescLocaleID(nameof(Settings.VersionDisplay)),  "Aktuelle Mod-Version." },
+
+               { m_Setting.GetOptionLabelLocaleID(nameof(Settings.OpenAchievementsWikiButton)), "Achievements wiki" },
+{ m_Setting.GetOptionDescLocaleID(nameof(Settings.OpenAchievementsWikiButton)),  "Open the CS2 achievements wiki in your browser." },
+
+
+                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.DebugNote)), "Hinweise" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Settings.DebugNote)),  "Entwicklertools werden später hinzugefügt." },
             };
         }
 

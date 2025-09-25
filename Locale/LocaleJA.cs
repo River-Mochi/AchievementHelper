@@ -16,27 +16,38 @@ namespace AchievementHelper
         {
             return new Dictionary<string, string>
             {
-                // Mod name in Options menu
-                { m_Setting.GetSettingsLocaleID(), Mod.Name },
+                { m_Setting.GetSettingsLocaleID(), "Achievement Helper" },
 
-                // One section/tab
-                { m_Setting.GetOptionTabLocaleID(Settings.Section), "メイン" },
+                { m_Setting.GetOptionTabLocaleID(Settings.Section),      "設定" },
+                { m_Setting.GetOptionTabLocaleID(Settings.AboutSection), "情報" },
+                { m_Setting.GetOptionTabLocaleID(Settings.DebugSection), "デバッグ" },
 
-                // Groups
-                { m_Setting.GetOptionGroupLocaleID(Settings.MainGroup),  "設定" },
-                { m_Setting.GetOptionGroupLocaleID(Settings.AboutGroup), "概要" },
+                { m_Setting.GetOptionGroupLocaleID(Settings.MainGroup),        "設定" },
+                { m_Setting.GetOptionGroupLocaleID(Settings.NotCompleteGroup), "未達成" },
+                { m_Setting.GetOptionGroupLocaleID(Settings.CompletedGroup),   "達成済み" },
 
-                // Toggle
-                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.EnableAchievements)), "実績を有効にする" },
+                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.EnableAchievements)), "実績を有効化" },
                 { m_Setting.GetOptionDescLocaleID(nameof(Settings.EnableAchievements)),
-                  "ON（既定）の場合、Mod使用中でも実績を再度有効化し、読み込み中に状態を保護します。" },
+                  "ON（既定）の場合、MOD使用時でも実績を有効にし、読み込み中も維持します。" },
 
-                // About fields
-                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.NameDisplay)), "Mod" },
-                { m_Setting.GetOptionDescLocaleID(nameof(Settings.NameDisplay)),  "このModの表示名。" },
+                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.NotCompleteList)), "未達成" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Settings.NotCompleteList)),  "まだ獲得可能な実績。" },
+
+                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.CompletedList)), "達成済み" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Settings.CompletedList)),  "すでに解除した実績。" },
+
+                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.NameDisplay)),    "Mod" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Settings.NameDisplay)),     "このModの名称。" },
 
                 { m_Setting.GetOptionLabelLocaleID(nameof(Settings.VersionDisplay)), "バージョン" },
-                { m_Setting.GetOptionDescLocaleID(nameof(Settings.VersionDisplay)), "現在のModバージョン。" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Settings.VersionDisplay)),  "現在のModバージョン。" },
+
+           { m_Setting.GetOptionLabelLocaleID(nameof(Settings.OpenAchievementsWikiButton)), "Achievements wiki" },
+{ m_Setting.GetOptionDescLocaleID(nameof(Settings.OpenAchievementsWikiButton)),  "Open the CS2 achievements wiki in your browser." },
+
+
+                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.DebugNote)), "備考" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Settings.DebugNote)),  "開発用ツールは後日追加予定。" },
             };
         }
 

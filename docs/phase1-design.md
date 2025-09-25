@@ -130,3 +130,27 @@ ForceEnableIfNeeded(source):
     PlatformManager.instance.achievementsEnabled = true
     return true
   return false
+
+
+Addendum — dnSpy findings (for Phase 2)
+
+AchievementsUISystem.GetAchievementTabStatus() logic:
+
+0 = Available
+1 = Hidden
+2 = ModsDisabled (if usedMods.Count > 0)
+3 = OptionsDisabled (if achievementsEnabled == false)
+
+Icons:
+Path: Cities2_Data/Content/Game/UI/Media/Game/Achievements/
+Naming: <internalName>.png = color, <internalName>_locked.png = grayscale.
+
+Warnings:
+_c.Menu.ACHIEVEMENTS_WARNING_MODS, _c.Menu.ACHIEVEMENTS_WARNING_OPTIONS, _c.Menu.ACHIEVEMENTS_WARNING_DEBUGMENU.
+Safe to override these locale keys instead of patching.
+
+Achievements are global, not per-save.
+PlatformManager.instance.EnumerateAchievements() provides the list; progress and unlock state are tracked by the platform layer globally.
+
+Future Phase 2:
+AchievementTriggerSystem.OnGameLoaded currently ANDs achievementsEnabled with game option flags. If we ever decide to truly bypass restrictions (not just hide the warning), that’s the code path to study/patch.
