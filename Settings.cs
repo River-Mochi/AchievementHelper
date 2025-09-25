@@ -1,101 +1,112 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
-using Colossal.IO.AssetDatabase;
-using Colossal.PSI.Common;
+using Colossal.IO.AssetDatabase;  // [FileLocation]
+using Colossal.PSI.Common;        // PlatformManager, AchievementId, AchievementsHelper
 using Game.Modding;
 using Game.Settings;
+using Game.UI.Widgets;            // DropdownItem<T>
 using UnityEngine;
 
 namespace AchievementHelper
 {
     [FileLocation("AchievementHelper")]
-    [SettingsUIGroupOrder(MainGroup, NotCompleteGroup, CompletedGroup)]
-    [SettingsUIShowGroupName(MainGroup, NotCompleteGroup, CompletedGroup)]
+    [SettingsUIGroupOrder(MainInfoGroup)]
+    [SettingsUIShowGroupName(MainInfoGroup)]
     public class Settings : ModSetting
     {
-        // Tabs / groups
+        // ---- Tabs / Groups ----
         public const string MainTab = "Main";
-        public const string AboutTab = "About";
-        public const string DebugTab = "Debug";
+        public const string AdvancedTab = "Advanced";
 
-        public const string MainGroup = "Settings";
-        public const string NotCompleteGroup = "Not Complete";
-        public const string CompletedGroup = "Completed";
-
-        public const string InfoGroup = "Info";
+        // Main tab groups
+        public const string MainInfoGroup = "Info";
         public const string ButtonGroup = "Links";
-        public const string FiltersGroup = "Filters";
-        public const string DebugButtons = "Actions";
+        public const string NotesGroup = "Notes";
+
+        // Advanced tab groups
+        public const string AdvRowActions = "Actions";
+        public const string AdvRowDebug = "Debug";   // header "DEBUG"
 
         private const string UrlAchievementsWiki = "https://cs2.paradoxwikis.com/Achievements";
 
         public Settings(IMod mod) : base(mod) { }
 
-        // Main toggle
-        [SettingsUISection(MainTab, MainGroup)]
-        public bool EnableAchievements { get; set; } = true;
-
-        // Read-only lists
-        private string m_NotCompleteText = "—";
-        private string m_CompletedText = "—";
-
-        [SettingsUISection(MainTab, NotCompleteGroup)]
-        public string NotCompleteList => m_NotCompleteText;
-
-        [SettingsUISection(MainTab, CompletedGroup)]
-        public string CompletedList => m_CompletedText;
-
-        public void SetAchievementLists(IEnumerable<string> notComplete, IEnumerable<string> completed)
-        {
-            static string Bullets(IEnumerable<string> lines) =>
-                lines == null ? "—" :
-                string.Join("\r\n", lines.Select(Titleize)
-                                         .OrderBy(x => x, StringComparer.OrdinalIgnoreCase)
-                                         .Select(x => $"• {x}"));
-
-            m_NotCompleteText = Bullets(notComplete);
-            m_CompletedText = Bullets(completed);
-        }
-
-        // About tab
-        [SettingsUISection(AboutTab, InfoGroup)]
+        // ---- Main: Name / Version ----
+        [SettingsUISection(MainTab, MainInfoGroup)]
         public string NameDisplay => Mod.Name;
 
-        [SettingsUISection(AboutTab, InfoGroup)]
+        [SettingsUISection(MainTab, MainInfoGroup)]
         public string VersionDisplay => Mod.VersionShort;
 
+        // Main: Wiki button
         [SettingsUIButtonGroup(ButtonGroup)]
         [SettingsUIButton]
-        [SettingsUISection(AboutTab, ButtonGroup)]
+        [SettingsUISection(MainTab, ButtonGroup)]
         public bool OpenAchievementsWikiButton
         {
             set
             {
+                if (!value) return;
                 try { Application.OpenURL(UrlAchievementsWiki); }
                 catch (Exception ex) { Mod.log.Warn($"Failed to open wiki: {ex.Message}"); }
             }
         }
 
-        // Debug tab — dropdown + actions
-        [SettingsUISection(DebugTab, DebugButtons)]
+        // Main: Notes (multiline; content by Locale)
+        [SettingsUIMultilineText]
+        [SettingsUISection(MainTab, NotesGroup)]
+        public string MainNotes => string.Empty;
+
+        // ---- Advanced: dropdown + Unlock/Clear in same row ----
+        [SettingsUISection(AdvancedTab, AdvRowActions)]
         [SettingsUIDropdown(typeof(Settings), nameof(GetAchievementChoices))]
         public string SelectedAchievement { get; set; } = "";
 
+        [SettingsUIButtonGroup(AdvRowActions)]
         [SettingsUIButton]
-        [SettingsUISection(DebugTab, DebugButtons)]
+        [SettingsUISection(AdvancedTab, AdvRowActions)]
+        public bool UnlockSelectedAchievement
+        {
+            set
+            {
+                if (!value) return;
+                try
+                {
+                    if (!TryResolveAchievementId(SelectedAchievement, out var id))
+                    {
+                        Mod.log.Warn($"UnlockSelectedAchievement: could not resolve '{SelectedAchievement}'.");
+                        return;
+                    }
+
+                    var pm = PlatformManager.instance;
+                    if (pm == null)
+                    {
+                        Mod.log.Warn("UnlockSelectedAchievement: PlatformManager.instance is null.");
+                        return;
+                    }
+
+                    pm.UnlockAchievement(id);
+                    Mod.log.Info($"Requested UNLOCK of achievement: {SelectedAchievement} ({id}).");
+                }
+                catch (Exception ex)
+                {
+                    Mod.log.Warn($"UnlockSelectedAchievement failed: {ex.GetType().Name}: {ex.Message}");
+                }
+            }
+        }
+
+        [SettingsUIButtonGroup(AdvRowActions)]
+        [SettingsUIButton]
+        [SettingsUIConfirmation] // Yes/No modal
+        [SettingsUISection(AdvancedTab, AdvRowActions)]
         public bool ClearSelectedAchievement
         {
             set
             {
+                if (!value) return; // user clicked "No"
                 try
                 {
-                    if (string.IsNullOrEmpty(SelectedAchievement))
-                    {
-                        Mod.log.Warn("ClearSelectedAchievement: nothing selected.");
-                        return;
-                    }
                     if (!TryResolveAchievementId(SelectedAchievement, out var id))
                     {
                         Mod.log.Warn($"ClearSelectedAchievement: could not resolve '{SelectedAchievement}'.");
@@ -110,7 +121,7 @@ namespace AchievementHelper
                     }
 
                     pm.ClearAchievement(id);
-                    Mod.log.Info($"Requested clear of achievement: {SelectedAchievement} ({id}).");
+                    Mod.log.Info($"Requested CLEAR of achievement: {SelectedAchievement} ({id}).");
                 }
                 catch (Exception ex)
                 {
@@ -119,38 +130,50 @@ namespace AchievementHelper
             }
         }
 
+        // Advanced: text directly under the two buttons
+        [SettingsUIMultilineText]
+        [SettingsUISection(AdvancedTab, AdvRowActions)]
+        public string AdvancedAdvisory => string.Empty;
+
+        // ---- Advanced: DEBUG section (Clear All) ----
+        [SettingsUIButtonGroup(AdvRowDebug)]
         [SettingsUIButton]
-        [SettingsUISection(DebugTab, DebugButtons)]
-        public bool ResetAllAchievements
+        [SettingsUIConfirmation]
+        [SettingsUISection(AdvancedTab, AdvRowDebug)]
+        public bool ClearAllAchievements
         {
             set
             {
+                if (!value) return;
                 try
                 {
                     var pm = PlatformManager.instance;
                     if (pm == null)
                     {
-                        Mod.log.Warn("ResetAllAchievements: PlatformManager.instance is null.");
+                        Mod.log.Warn("ClearAllAchievements: PlatformManager.instance is null.");
                         return;
                     }
 
                     pm.ResetAchievements();
-                    Mod.log.Info("Requested RESET of ALL platform achievements.");
+                    Mod.log.Info("Requested CLEAR of ALL platform achievements.");
                 }
                 catch (Exception ex)
                 {
-                    Mod.log.Warn($"ResetAllAchievements failed: {ex.GetType().Name}: {ex.Message}");
+                    Mod.log.Warn($"ClearAllAchievements failed: {ex.GetType().Name}: {ex.Message}");
                 }
             }
         }
 
-        public static IEnumerable<string> GetAchievementChoices()
+        // ---- Helpers ----
+
+        /// <summary>Dropdown provider: value = internalName, display = friendly title.</summary>
+        public static DropdownItem<string>[] GetAchievementChoices()
         {
             var pm = PlatformManager.instance;
-            if (pm == null) yield break;
+            if (pm == null) return Array.Empty<DropdownItem<string>>();
 
             var meta = AchievementsHelper.InitializeAchievements();
-            var set = new SortedSet<string>(StringComparer.OrdinalIgnoreCase);
+            var items = new List<DropdownItem<string>>();
 
             foreach (var a in pm.EnumerateAchievements())
             {
@@ -159,53 +182,48 @@ namespace AchievementHelper
                         ? attr.internalName
                         : a.id.ToString();
 
-                set.Add(Titleize(internalName));
+                items.Add(new DropdownItem<string>
+                {
+                    value = internalName,
+                    displayName = AchievementDisplay.Get(internalName)
+                });
             }
 
-            foreach (var display in set)
-                yield return display;
+            return items.OrderBy(i => i.displayName.id, StringComparer.OrdinalIgnoreCase).ToArray();
         }
 
-        private static bool TryResolveAchievementId(string display, out AchievementId id)
+        private static bool TryResolveAchievementId(string selectedValue, out AchievementId id)
         {
             id = default;
             var pm = PlatformManager.instance;
             if (pm == null) return false;
 
-            var meta = AchievementsHelper.InitializeAchievements();
-
             foreach (var a in pm.EnumerateAchievements())
             {
-                var internalName =
-                    (meta != null && meta.TryGetValue(a.id, out var attr) && !string.IsNullOrEmpty(attr.internalName))
-                        ? attr.internalName
-                        : a.id.ToString();
-
-                if (string.Equals(Titleize(internalName), display, StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(a.id.ToString(), selectedValue, StringComparison.OrdinalIgnoreCase))
                 {
                     id = a.id;
                     return true;
                 }
             }
-            return false;
-        }
 
-        /// <summary>
-        /// Insert spaces at CamelCase / digit boundaries and normalize gaps.
-        /// Keeps original casing (simple and predictable).
-        /// </summary>
-        internal static string Titleize(string internalName)
-        {
-            if (string.IsNullOrWhiteSpace(internalName)) return internalName ?? "";
-            var spaced = Regex.Replace(internalName, "(?<!^)(?=[A-Z0-9])", " ").Trim();
-            return Regex.Replace(spaced, "\\s{2,}", " ");
+            var meta = AchievementsHelper.InitializeAchievements();
+            if (meta != null)
+            {
+                foreach (var kv in meta)
+                {
+                    if (string.Equals(kv.Value.internalName, selectedValue, StringComparison.OrdinalIgnoreCase))
+                    {
+                        id = kv.Key;
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         public override void SetDefaults()
         {
-            EnableAchievements = true;
-            m_NotCompleteText = "—";
-            m_CompletedText = "—";
             SelectedAchievement = "";
         }
     }

@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Reflection;               // Assembly attributes
+using System.Reflection;
 using Colossal;                        // IDictionarySource
 using Colossal.IO.AssetDatabase;       // AssetDatabase
 using Colossal.Logging;                // ILog, LogManager
-using Colossal.PSI.Common;             // PlatformManager, AchievementsHelper
+using Colossal.PSI.Common;             // AchievementsHelper
 using Game;                            // UpdateSystem
 using Game.Achievements;               // AchievementTriggerSystem
 using Game.Modding;                    // IMod
@@ -14,13 +14,11 @@ namespace AchievementHelper
 {
     public sealed class Mod : IMod
     {
-        // Logs/AchievementHelper.log
         public static readonly ILog log =
             LogManager.GetLogger("AchievementHelper").SetShowsErrorsInUI(false);
 
         public static Settings? Settings { get; private set; }
 
-        // Version/name  from assembly (.csproj)
         private static readonly Assembly s_Asm = Assembly.GetExecutingAssembly();
         public static readonly string Name =
             s_Asm.GetCustomAttribute<AssemblyTitleAttribute>()?.Title ?? "Achievement Helper";
@@ -33,17 +31,17 @@ namespace AchievementHelper
 
         private static bool s_BannerLogged;
 
-        // Locales to attach the override source to
-        private static readonly string[] s_LocaleIds =
+        // Add common locale variants (we'll also target the active locale dynamically)
+        internal static readonly string[] s_LocaleIds =
         {
-            "en-US","fr-FR","de-DE","es-ES","it-IT","ja-JP","ko-KR","vi-VN","zh-HANS"
+            "en-US","en-GB","en","en-US-POSIX",
+            "fr-FR","de-DE","es-ES","it-IT","ja-JP","ko-KR","vi-VN","zh-HANS","zh-HANT",
+            "pt-BR","pt-PT","pl-PL","ru-RU","tr-TR","cs-CZ","nl-NL","sv-SE","fi-FI","nb-NO","da-DK"
         };
 
-        // ---- Lifecycle ----
         public void OnLoad(UpdateSystem updateSystem)
         {
             log.Info(nameof(OnLoad));
-
             if (!s_BannerLogged)
             {
                 log.Info($"{Name} {VersionShort} (info: {VersionInformational})");
@@ -58,26 +56,23 @@ namespace AchievementHelper
             //  AddLocale("fr-FR", new LocaleFR(settings));
             //  AddLocale("de-DE", new LocaleDE(settings));
             //  AddLocale("es-ES", new LocaleES(settings));
-            //  AddLocale("it-IT", new LocaleIT(settings));
-            //  AddLocale("ja-JP", new LocaleJA(settings));
-            //  AddLocale("ko-KR", new LocaleKO(settings));
-            //  AddLocale("vi-VN", new LocaleVI(settings));
-            //  AddLocale("zh-HANS", new LocaleZH_CN(settings));
+            //   AddLocale("it-IT", new LocaleIT(settings));
+            //   AddLocale("ja-JP", new LocaleJA(settings));
+            //   AddLocale("ko-KR", new LocaleKO(settings));
+            //   AddLocale("vi-VN", new LocaleVI(settings));
+            //   AddLocale("zh-HANS", new LocaleZH_CN(settings));
 
-            // Hide/replace in game Achievements tab warning via locale override
-            TryInstallWarningOverrideSource();
 
-            // Load saved settings
+            // Load any saved settings (none currently)
             AssetDatabase.global.LoadSettings("AchievementHelper", settings, new Settings(this));
-
-            // Build lists once at load
-            if (TryBuildAchievementLists(out var notComplete, out var completed))
-                settings.SetAchievementLists(notComplete, completed);
 
             // Options UI
             settings.RegisterInOptionsUI();
 
-            // Keep achievements enabled after triggers run
+            // Hide Achievement warning @ mods strings
+            TryInstallWarningOverrideSource();
+
+            // Keep achievements enabled: run after achievement trigger system
             updateSystem.UpdateAfter<AchievementHelperSystem, AchievementTriggerSystem>(SystemUpdatePhase.MainLoop);
 
             var lm = GameManager.instance?.localizationManager;
@@ -87,7 +82,6 @@ namespace AchievementHelper
         public void OnDispose()
         {
             log.Info(nameof(OnDispose));
-
             if (Settings != null)
             {
                 Settings.UnregisterInOptionsUI();
@@ -95,7 +89,6 @@ namespace AchievementHelper
             }
         }
 
-        // ---- Helpers ----
         private static void AddLocale(string localeId, IDictionarySource source)
         {
             var lm = GameManager.instance?.localizationManager;
@@ -104,89 +97,28 @@ namespace AchievementHelper
         }
 
         /// <summary>
-        /// Tiny in-memory localization source that hides the Achievements warnings.
+        /// Blank the Achievement warning strings used on map menu and Progression/Achievements panel.
         /// </summary>
         private static void TryInstallWarningOverrideSource()
         {
-            try
-            {
-                var lm = GameManager.instance?.localizationManager;
-                if (lm == null) { log.Warn("No LocalizationManager; cannot add warning override."); return; }
+            var lm = GameManager.instance?.localizationManager;
+            if (lm == null) { Mod.log.Warn("No LocalizationManager; cannot add warning override."); return; }
 
-                var entries = new Dictionary<string, string>
-                {
-                    // Primary warnings -> hidden (empty)
-                    { "_c.Menu.ACHIEVEMENTS_WARNING_MODS",           "" },
-                    { "_c.Menu.ACHIEVEMENTS_WARNING_GAME_OPTIONS",   "" },
-                    { "_c.Menu.ACHIEVEMENTS_WARNING_DEBUGMENU",      "" },
-                    // Past / readonly variants -> also hidden
-                    { "_c.Menu.ACHIEVEMENTS_WARNING_PAST_MODS",      "" },
-                    { "_c.Menu.ACHIEVEMENTS_WARNING_PAST_OPTIONS",   "" },
-                    { "_c.Menu.ACHIEVEMENTS_WARNING_PAST_DEBUGMENU", "" },
-                    { "_c.Menu.ACHIEVEMENTS_WARNING_READONLY",       "" },
-                };
+            const string key = "Menu.ACHIEVEMENTS_WARNING_MODS";             // confirmed by identify run
+            const string text = "Achievements Enabled by Achievement Fixer."; // or "" to fully hide
 
-                // Add for active and common locales (last-added source wins)
-                var active = lm.activeLocaleId;
-                if (!string.IsNullOrEmpty(active))
-                    lm.AddSource(active, new MemoryLocalizationSource(entries));
+            var entries = new Dictionary<string, string> { [key] = text };
 
-                foreach (var id in s_LocaleIds)
-                    lm.AddSource(id, new MemoryLocalizationSource(entries));
+            var active = lm.activeLocaleId;
+            if (!string.IsNullOrEmpty(active))
+                lm.AddSource(active, new MemoryLocalizationSource(entries));
 
-                log.Info("Installed localization override for Achievements warnings.");
-            }
-            catch (Exception ex)
-            {
-                log.Warn($"Warning override failed: {ex.GetType().Name}: {ex.Message}");
-            }
+            Mod.log.Info("Installed override for Menu.ACHIEVEMENTS_WARNING_MODS.");
         }
 
-        /// <summary>
-        /// Split into NotComplete / Complete names
-        /// </summary>
-        private static bool TryBuildAchievementLists(out List<string> notComplete, out List<string> completed)
-        {
-            notComplete = new();
-            completed = new();
-
-            try
-            {
-                var pm = PlatformManager.instance;
-                if (pm == null)
-                {
-                    log.Warn("PlatformManager.instance is null.");
-                    return false;
-                }
-
-                var meta = AchievementsHelper.InitializeAchievements(); // id -> AchievementAttribute (may be null)
-
-                foreach (var a in pm.EnumerateAchievements())
-                {
-                    var internalName =
-                        (meta != null && meta.TryGetValue(a.id, out var attr) && !string.IsNullOrEmpty(attr.internalName))
-                            ? attr.internalName
-                            : a.id.ToString();
-
-                    var display = Settings.Titleize(internalName);
-
-                    if (a.achieved) completed.Add(display);
-                    else notComplete.Add(display);
-                }
-
-                notComplete.Sort(StringComparer.OrdinalIgnoreCase);
-                completed.Sort(StringComparer.OrdinalIgnoreCase);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                log.Warn($"TryBuildAchievementLists: {ex.GetType().Name}: {ex.Message}");
-                return false;
-            }
-        }
     }
 
-    /// <summary>Minimal in-memory localization source to overriding specific keys.</summary>
+    /// <summary>In-memory localization source.</summary>
     internal sealed class MemoryLocalizationSource : IDictionarySource
     {
         private readonly Dictionary<string, string> m_Entries;

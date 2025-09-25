@@ -6,17 +6,14 @@ using Unity.Entities;                   // WorldSystemFilter
 namespace AchievementHelper
 {
     /// <summary>
-    /// Re-enables achievements after a city finishes loading and holds them TRUE
-    /// for a short assert window. The window auto-ends early after N stable frames.
+    /// Keeps achievements enabled after load with a short assert window.
     /// </summary>
     [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     public partial class AchievementHelperSystem : GameSystemBase
     {
-        // ---- Tunables ----
-        private const int kAssertFrames = 600;        // ~10s @60 FPS
-        private const int kStableFramesToExit = 60;   // early-exit once TRUE for this many frames
+        private const int kAssertFrames = 600;      // ~10s @60 FPS
+        private const int kStableFramesToExit = 60; // early-exit once TRUE for this many frames
 
-        // ---- State ----
         private int m_FramesLeft;
         private int m_StableTrueFrames;
 
@@ -32,15 +29,7 @@ namespace AchievementHelper
         {
             base.OnGameLoadingComplete(purpose, mode);
 
-            if (!(Mod.Settings?.EnableAchievements ?? true))
-            {
-                Mod.log.Info("EnableAchievements = false; leaving achievements disabled for this session.");
-                m_FramesLeft = 0;
-                m_StableTrueFrames = 0;
-                return;
-            }
-
-            // Start a new assert window at load-complete; flips often occur here.
+            // Start a new assert window at load-complete.
             m_FramesLeft = kAssertFrames;
             m_StableTrueFrames = 0;
 
@@ -50,8 +39,6 @@ namespace AchievementHelper
 
         protected override void OnUpdate()
         {
-            if (!(Mod.Settings?.EnableAchievements ?? true))
-                return;
 
             if (m_FramesLeft <= 0)
                 return;
@@ -72,7 +59,6 @@ namespace AchievementHelper
                 Mod.log.Info($"Asserting… {m_FramesLeft} frames left (stable={m_StableTrueFrames})");
         }
 
-        /// <summary>Ensures PlatformManager.achievementsEnabled is TRUE. Returns true if we had to flip it.</summary>
         private static bool ForceEnableIfNeeded(string source)
         {
             var pm = PlatformManager.instance;
@@ -89,7 +75,7 @@ namespace AchievementHelper
                 return true;
             }
 
-            return false; // already true
+            return false;
         }
     }
 }
