@@ -11,8 +11,15 @@ using UnityEngine;
 namespace AchievementFixer
 {
     [FileLocation("AchievementFixer")]
-    [SettingsUIGroupOrder(MainInfoGroup)]
-    [SettingsUIShowGroupName(MainInfoGroup)]
+    [SettingsUIGroupOrder(
+        MainInfoGroup, ButtonGroup, NotesGroup,
+        AdvRowActions, AdvRowDebug
+    )]
+    [SettingsUIShowGroupName(
+        NotesGroup,     // show only NOTES on Main tab
+        AdvRowDebug     // show only DEBUG on Advanced tab
+    )]
+
     public class Settings : ModSetting
     {
         // ---- Tabs / Groups ----
@@ -63,8 +70,9 @@ namespace AchievementFixer
         [SettingsUIDropdown(typeof(Settings), nameof(GetAchievementChoices))]
         public string SelectedAchievement { get; set; } = "";
 
-        [SettingsUIButtonGroup(AdvRowActions)]
+        //Unlock Selected
         [SettingsUIButton]
+        [SettingsUIButtonGroup(AdvRowActions)]
         [SettingsUISection(AdvancedTab, AdvRowActions)]
         public bool UnlockSelectedAchievement
         {
@@ -96,6 +104,7 @@ namespace AchievementFixer
             }
         }
 
+        // Clear Selected
         [SettingsUIButtonGroup(AdvRowActions)]
         [SettingsUIButton]
         [SettingsUIConfirmation] // Yes/No modal
@@ -136,9 +145,9 @@ namespace AchievementFixer
         public string AdvancedAdvisory => string.Empty;
 
         // ---- Advanced: DEBUG section (Clear All) ----
-        [SettingsUIButtonGroup(AdvRowDebug)]
         [SettingsUIButton]
-        [SettingsUIConfirmation]
+        [SettingsUIConfirmation]        // Yes/No Modal
+        [SettingsUIButtonGroup(AdvRowDebug)]
         [SettingsUISection(AdvancedTab, AdvRowDebug)]
         public bool ClearAllAchievements
         {

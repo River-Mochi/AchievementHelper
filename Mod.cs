@@ -39,7 +39,7 @@ namespace AchievementFixer
             log.Info(nameof(OnLoad));
             if (!s_BannerLogged)
             {
-                log.Info($"{Name} {VersionShort} (info: {VersionInformational})");
+                log.Info($"{Name} {VersionShort}");
                 s_BannerLogged = true;
             }
 
