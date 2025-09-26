@@ -5,7 +5,7 @@
 - Active mods (not assets) will normally disqualify a save game for achievement completion.
 
 ## Options Menu
-- Toggle ☑ lets players disable the mod even if it's still installed.
+
 
 ## Non-goals Phase 1
 - This mod does not automatically give you the achievement, you still need to do the natural things required, e.g., build 10 parks in a single city to get "Groundskeeper".
