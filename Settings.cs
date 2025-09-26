@@ -26,7 +26,7 @@ namespace AchievementFixer
 
         // Advanced tab groups
         public const string AdvRowActions = "Actions";
-        public const string AdvRowDebug = "Debug";   // header "DEBUG"
+        public const string AdvRowDebug = "Debug";
 
         private const string UrlAchievementsWiki = "https://cs2.paradoxwikis.com/Achievements";
 
@@ -53,12 +53,12 @@ namespace AchievementFixer
             }
         }
 
-        // Main: Notes (multiline; content by Locale)
+        // Main tab: Notes (multiline; content by Locale)
         [SettingsUIMultilineText]
         [SettingsUISection(MainTab, NotesGroup)]
         public string MainNotes => string.Empty;
 
-        // ---- Advanced: dropdown + Unlock/Clear in same row ----
+        // ---- Advanced tab: dropdown + Unlock/Clear in same row ----
         [SettingsUISection(AdvancedTab, AdvRowActions)]
         [SettingsUIDropdown(typeof(Settings), nameof(GetAchievementChoices))]
         public string SelectedAchievement { get; set; } = "";
