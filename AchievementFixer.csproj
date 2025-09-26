@@ -1,0 +1,123 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<Configurations>Debug;Release</Configurations>
+
+		<!-- Mod information file required for publishing on PDX mods -->
+		<PublishConfigurationPath>Properties\PublishConfiguration.xml</PublishConfigurationPath>
+
+		<!-- Single source of truth for version -->
+		<Version>1.0.0</Version>
+		<FileVersion>$(Version).0</FileVersion>
+		<AssemblyVersion>1.0.0.0</AssemblyVersion>
+		<InformationalVersion>$(Version)</InformationalVersion>
+
+		<!-- Product metadata (shows in Windows + About UI) -->
+		<AssemblyTitle>Achievement Fixer</AssemblyTitle>
+		<AssemblyName>AchievementFixer</AssemblyName>
+		<Product>Achievement Fixer</Product>
+
+		<!-- Namespace clarity -->
+		<RootNamespace>AchievementFixer</RootNamespace>
+
+		<!-- Keep NREs away -->
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<!-- Do not include doc folder in build; If anything tried to mark docs as Content, undo it -->
+		<Content Remove="docs\**" />
+		<Compile Remove="Locale\LocaleDE.cs" />
+		<Compile Remove="Locale\LocaleES.cs" />
+		<Compile Remove="Locale\LocaleFR.cs" />
+		<Compile Remove="Locale\LocaleIT.cs" />
+		<Compile Remove="Locale\LocaleJA.cs" />
+		<Compile Remove="Locale\LocaleKO.cs" />
+		<Compile Remove="Locale\LocaleVI.cs" />
+		<Compile Remove="Locale\LocaleZH_CN.cs" />
+
+		<!-- Keep docs as None, and never copy or pack -->
+		<None Update="docs\**">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+			<Pack>false</Pack>
+		</None>
+	</ItemGroup>
+
+
+	<PropertyGroup Condition="'$(Configuration)'=='Debug'">
+		<IncludeSourceRevisionInInformationalVersion>true</IncludeSourceRevisionInInformationalVersion>
+		<DefineConstants>TRACE;DEBUG</DefineConstants>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)'=='Release'">
+		<IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+		<DefineConstants>TRACE</DefineConstants>
+	</PropertyGroup>
+
+	<!-- CS2 toolchain; must be after PropertyGroup -->
+	<Import Project="$([System.Environment]::GetEnvironmentVariable('CSII_TOOLPATH', 'EnvironmentVariableTarget.User'))\Mod.props" />
+	<Import Project="$([System.Environment]::GetEnvironmentVariable('CSII_TOOLPATH', 'EnvironmentVariableTarget.User'))\Mod.targets" />
+
+	<!-- Minimal explicit refs; toolchain wires most of them -->
+	<ItemGroup>
+		<Reference Include="Game">
+			<Private>false</Private>
+		</Reference>
+		<Reference Include="Colossal.Core">
+			<Private>false</Private>
+		</Reference>
+		<Reference Include="Colossal.Logging">
+			<Private>false</Private>
+		</Reference>
+		<Reference Include="Colossal.IO.AssetDatabase">
+			<Private>false</Private>
+		</Reference>
+		<Reference Include="Colossal.Localization">
+			<Private>false</Private>
+		</Reference>
+		<Reference Include="Colossal.UI">
+			<Private>false</Private>
+		</Reference>
+		<Reference Include="Colossal.UI.Binding">
+			<Private>false</Private>
+		</Reference>
+
+		<Reference Include="Colossal.PSI.Common">
+			<HintPath>$(ManagedPath)\Colossal.PSI.Common.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
+
+		<Reference Include="Unity.InputSystem">
+			<Private>false</Private>
+		</Reference>
+		<Reference Include="UnityEngine.CoreModule">
+			<Private>false</Private>
+		</Reference>
+		<Reference Include="Unity.Burst">
+			<Private>false</Private>
+		</Reference>
+		<Reference Include="Unity.Collections">
+			<Private>false</Private>
+		</Reference>
+		<Reference Include="Unity.Entities">
+			<Private>false</Private>
+		</Reference>
+		<Reference Include="Unity.Mathematics">
+			<Private>false</Private>
+		</Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="$(ModPropsFile)" Link="Properties\Mod.props" />
+		<None Include="$(ModTargetsFile)" Link="Properties\Mod.targets" />
+		<None Include="Locale\LocaleDE.cs" />
+		<None Include="Locale\LocaleES.cs" />
+		<None Include="Locale\LocaleFR.cs" />
+		<None Include="Locale\LocaleIT.cs" />
+		<None Include="Locale\LocaleJA.cs" />
+		<None Include="Locale\LocaleKO.cs" />
+		<None Include="Locale\LocaleVI.cs" />
+		<None Include="Locale\LocaleZH_CN.cs" />
+	</ItemGroup>
+
+</Project>

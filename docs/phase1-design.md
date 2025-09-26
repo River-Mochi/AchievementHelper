@@ -1,8 +1,8 @@
-# Achievement Helper
+# Achievement Fixer
 
 ## Goal - Phase 1
 - Keep achievements working in Cities Skylines II even when the game is started with mods.
-- Active mods (not assets) will normally disqualify a save game for acheivement completion.
+- Active mods (not assets) will normally disqualify a save game for achievement completion.
 
 ## Options Menu
 - Toggle ☑ lets players disable the mod even if it's still installed.
@@ -26,12 +26,12 @@
 
 ## Project Layout (files & classes)
 
-- **Namespace:** `AchievementHelper`
+- **Namespace:** `AchievementFixer`
 - **Files:**
   - `Mod.cs` — main mod entry point, logs, loads settings, adds `LocaleEN`, and registers the System to run.
   - `Settings.cs` — `EnableAchievements` toggle (default ON)
   - `Locale/LocaleEN.cs` — English strings for Settings UI.
-  - `AchievementHelperSystem.cs` — after loading, checks again to ensure achievements are still enabled (inherits `GameSystemBase`).
+  - `AchievementFixerSystem.cs` — after loading, checks again to ensure achievements are still enabled (inherits `GameSystemBase`).
 
 ---
 
@@ -42,14 +42,42 @@
 | `GameSystemBase` | Base class | to hook game lifecycle and `OnUpdate()`. |
 | `GameSystemBase.OnGameLoadingComplete(Purpose, GameMode)` | Method | Best moment to start short assert window. |
 | `GameSystemBase.OnUpdate()` | Method | Runs every frame; we enforce during the window. |
-| `Colossal.PSI.Common.PlatformManager.instance` | Singleton | Holds `achievementsEnabled` |
+| `Colossal.PSI.Common.PlatformManager.instance` | Singleton | Holds `achievementsEnabled`. |
 | `PlatformManager.achievementsEnabled : bool` | Field/prop | single flag that disables/enables achievements backends. |
 | `LogManager.GetLogger(...).SetShowsErrorsInUI(false)` | Logging | Traceable uses \Logs\modName.log |
 | `GameManager.instance.localizationManager.AddSource("en-US", new LocaleEN(...))` | Localization | Register English strings. |
 | `ModSetting` + `SettingsUI*` attributes | Settings UI | build checkbox toggles & Options menu without a custom UI. |
 | `AssetDatabase.global.LoadSettings(modName, setting, new Setting(mod))` | Settings | Persist user settings between sessions. |
+| `Game.UI.InGame.AchievementsUISystem` | UISystemBase | Builds the Achievements tab UI, wires bindings. |
+| `AchievementsUISystem.GetAchievementTabStatus()` | Method | Decides which warning state (Available, Hidden, ModsDisabled, OptionsDisabled) is shown. |
+| `GetterValueBinding<int>("achievements", "achievementTabStatus", ...)` | Binding | Exposes tab status to the UI. |
+| `IAchievement` / `PlatformManager.instance.EnumerateAchievements()` | API | Enumerates names, descriptions, progress, and icons. |
+| `_c.Menu.ACHIEVEMENTS_WARNING_*` keys | Localization keys | Text for warning messages (“disabled because mods…”, etc.). |
+| `Media/Game/Achievements/*.png` | Assets | Icons used in the Achievements tab. Color = achieved; `_locked` = grayscale locked state. |
+| `CityConfigurationSystem.usedMods.Count` | Field | Used by `AchievementsUISystem.GetAchievementTabStatus()` to decide ModsDisabled status. |
+| `Achievements` (static IDs) | Data | Contains all achievement IDs. |
+| `AchievementTriggerSystem` | System | Enforces progress, also ANDs `achievementsEnabled` with mod/option flags on load. |
 
-> **Note:** Game code includes `Colossal.PSI.Common.AchievementsHelper` (plural). Our namespace `AchievementHelper` (singular) is distinct; no conflict.
+> **Note:** Game code includes `Colossal.PSI.Common.AchievementsHelper` (plural). Our namespace `AchievementFixer` (singular) is distinct; no conflict.
+
+---
+
+## UI / Localization Hooks
+
+- Warning messages in the Achievements tab are **not hard-coded strings**; they’re pulled from localization keys:
+  - `Menu.ACHIEVEMENTS_WARNING_MODS`
+  - `Menu.ACHIEVEMENTS_WARNING_OPTIONS`
+  - (plus PlayStation variants, not relevant on PC)
+
+- **Override strategy:** Provide a replacement localization source (e.g., via `MemoryLocalizationSource`) that redefines those keys. This replaces the in-game warning without patching `AchievementsUISystem` directly.
+  - Example override text: `“Achievements are enabled by Achievement Fixer.”`
+  - To hide entirely, set the override value to an empty string `""`.
+
+- **Optional hide strategy:** Add a tiny CSS asset to hide the warning element if desired. This avoids Harmony but removes the banner visually.
+
+- **Future extension:** Enumerating `IAchievement` objects lets the mod display a custom Achievements panel if needed (names, descriptions, progress, icons are all available).
+
+---
 
 **Performance**
 - While active: 1–2 property checks per frame for at most ~10s (or until early exit).
@@ -101,3 +129,27 @@ ForceEnableIfNeeded(source):
     PlatformManager.instance.achievementsEnabled = true
     return true
   return false
+
+
+Addendum — dnSpy findings (for Phase 2)
+
+AchievementsUISystem.GetAchievementTabStatus() logic:
+
+0 = Available
+1 = Hidden
+2 = ModsDisabled (if usedMods.Count > 0)
+3 = OptionsDisabled (if achievementsEnabled == false)
+
+Icons:
+Path: Cities2_Data/Content/Game/UI/Media/Game/Achievements/
+Naming: <internalName>.png = color, <internalName>_locked.png = grayscale.
+
+Warnings:
+_c.Menu.ACHIEVEMENTS_WARNING_MODS, _c.Menu.ACHIEVEMENTS_WARNING_OPTIONS, _c.Menu.ACHIEVEMENTS_WARNING_DEBUGMENU.
+Safe to override these locale keys instead of patching.
+
+Achievements are global, not per-save.
+PlatformManager.instance.EnumerateAchievements() provides the list; progress and unlock state are tracked by the platform layer globally.
+
+Future Phase 2:
+AchievementTriggerSystem.OnGameLoaded currently ANDs achievementsEnabled with game option flags. If we ever decide to truly bypass restrictions (not just hide the warning), that’s the code path to study/patch.

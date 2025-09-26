@@ -1,39 +1,129 @@
-﻿using Colossal.IO.AssetDatabase;
-using Colossal.Logging;
-using Game;
-using Game.Modding;
-using Game.SceneFlow;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+using Colossal;                        // IDictionarySource
+using Colossal.IO.AssetDatabase;       // AssetDatabase
+using Colossal.Logging;                // ILog, LogManager
+using Game;                            // UpdateSystem
+using Game.Achievements;               // AchievementTriggerSystem
+using Game.Modding;                    // IMod
+using Game.SceneFlow;                  // GameManager
 
-namespace AchievementHelper
+namespace AchievementFixer
 {
-    public class Mod : IMod
+    public sealed class Mod : IMod
     {
-        public static ILog log = LogManager.GetLogger($"{nameof(AchievementHelper)}.{nameof(Mod)}").SetShowsErrorsInUI(false);
-        private Setting m_Setting;
+        public static readonly ILog log =
+            LogManager.GetLogger("AchievementFixer").SetShowsErrorsInUI(false);
+
+        public static Settings? Settings { get; private set; }
+
+        private static readonly Assembly s_Asm = Assembly.GetExecutingAssembly();
+        public static readonly string Name =
+            s_Asm.GetCustomAttribute<AssemblyTitleAttribute>()?.Title ?? "Achievement Fixer";
+
+        private static readonly string s_InfoRaw =
+            s_Asm.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? "1.0.0";
+
+        public static readonly string VersionShort = s_InfoRaw.Split(' ', '+')[0];
+        public static readonly string VersionInformational = s_InfoRaw;
+
+        private static bool s_BannerLogged;
+
+        // Add common locale variants (we'll also target the active locale dynamically)
+        internal static readonly string[] s_LocaleIds =
+        {
+            "en-US","en-GB","en","en-US-POSIX",
+            "fr-FR","de-DE","es-ES","it-IT","ja-JP","ko-KR","vi-VN","zh-HANS","zh-HANT",
+            "pt-BR","pt-PT","pl-PL","ru-RU","tr-TR","cs-CZ","nl-NL","sv-SE","fi-FI","nb-NO","da-DK"
+        };
 
         public void OnLoad(UpdateSystem updateSystem)
         {
             log.Info(nameof(OnLoad));
+            if (!s_BannerLogged)
+            {
+                log.Info($"{Name} {VersionShort} (info: {VersionInformational})");
+                s_BannerLogged = true;
+            }
 
-            if (GameManager.instance.modManager.TryGetExecutableAsset(this, out var asset))
-                log.Info($"Current mod asset at {asset.path}");
+            var settings = new Settings(this);
+            Settings = settings;
 
-            m_Setting = new Setting(this);
-            m_Setting.RegisterInOptionsUI();
-            GameManager.instance.localizationManager.AddSource("en-US", new LocaleEN(m_Setting));
+            // Locales (register BEFORE Options UI)
+            AddLocale("en-US", new LocaleEN(settings));
+            //  AddLocale("fr-FR", new LocaleFR(settings));
+            //  AddLocale("de-DE", new LocaleDE(settings));
+            //  AddLocale("es-ES", new LocaleES(settings));
+            //   AddLocale("it-IT", new LocaleIT(settings));
+            //   AddLocale("ja-JP", new LocaleJA(settings));
+            //   AddLocale("ko-KR", new LocaleKO(settings));
+            //   AddLocale("vi-VN", new LocaleVI(settings));
+            //   AddLocale("zh-HANS", new LocaleZH_CN(settings));
 
 
-            AssetDatabase.global.LoadSettings(nameof(AchievementHelper), m_Setting, new Setting(this));
+            // Load any saved settings (none currently)
+            AssetDatabase.global.LoadSettings("AchievementFixer", settings, new Settings(this));
+
+            // Options UI
+            settings.RegisterInOptionsUI();
+
+            // Hide Achievement warning @ mods strings
+            TryInstallWarningOverrideSource();
+
+            // Keep enabled: run after achievement trigger system
+            updateSystem.UpdateAfter<AchievementFixerSystem, AchievementTriggerSystem>(SystemUpdatePhase.MainLoop);
+
+            var lm = GameManager.instance?.localizationManager;
+            if (lm != null) log.Info($"[Locale] Active: {lm.activeLocaleId}");
         }
 
         public void OnDispose()
         {
             log.Info(nameof(OnDispose));
-            if (m_Setting != null)
+            if (Settings != null)
             {
-                m_Setting.UnregisterInOptionsUI();
-                m_Setting = null;
+                Settings.UnregisterInOptionsUI();
+                Settings = null;
             }
         }
+
+        private static void AddLocale(string localeId, IDictionarySource source)
+        {
+            var lm = GameManager.instance?.localizationManager;
+            if (lm != null) lm.AddSource(localeId, source);
+            else log.Warn($"LocalizationManager null; cannot add locale '{localeId}'.");
+        }
+
+        /// <summary>
+        /// Blank the Achievement warning strings used on map menu and Progression/Achievements panel.
+        /// </summary>
+        private static void TryInstallWarningOverrideSource()
+        {
+            var lm = GameManager.instance?.localizationManager;
+            if (lm == null) { Mod.log.Warn("No LocalizationManager; cannot add warning override."); return; }
+
+            const string key = "Menu.ACHIEVEMENTS_WARNING_MODS";             // confirmed by identify run
+            const string text = "Achievements Enabled by Achievement Fixer."; // or "" to fully hide
+
+            var entries = new Dictionary<string, string> { [key] = text };
+
+            var active = lm.activeLocaleId;
+            if (!string.IsNullOrEmpty(active))
+                lm.AddSource(active, new MemoryLocalizationSource(entries));
+
+            Mod.log.Info("Installed override for Menu.ACHIEVEMENTS_WARNING_MODS.");
+        }
+
+    }
+
+    /// <summary>In-memory localization source.</summary>
+    internal sealed class MemoryLocalizationSource : IDictionarySource
+    {
+        private readonly Dictionary<string, string> m_Entries;
+        public MemoryLocalizationSource(Dictionary<string, string> entries) { m_Entries = entries; }
+        public IEnumerable<KeyValuePair<string, string>> ReadEntries(
+            IList<IDictionaryEntryError> errors, Dictionary<string, int> indexCounts) => m_Entries;
+        public void Unload() { }
     }
 }
