@@ -3,7 +3,9 @@ using Colossal;
 
 namespace AchievementFixer
 {
-    /// <summary>English strings for the Options UI (en-US).</summary>
+    /// <summary>
+    /// English locale (en-US)
+    /// </summary>
     public class LocaleEN : IDictionarySource
     {
         private readonly Settings m_Setting;
@@ -21,12 +23,12 @@ namespace AchievementFixer
                 { m_Setting.GetOptionTabLocaleID(Settings.MainTab),     "Main"     },
                 { m_Setting.GetOptionTabLocaleID(Settings.AdvancedTab), "Advanced" },
 
-                // Groups (Main)
+                // Groups (Main tab)
                 { m_Setting.GetOptionGroupLocaleID(Settings.MainInfoGroup), "Info"   },
                 { m_Setting.GetOptionGroupLocaleID(Settings.ButtonGroup),   "Links"  },
                 { m_Setting.GetOptionGroupLocaleID(Settings.NotesGroup),    "Notes"  },
 
-                // Groups (Advanced)
+                // Groups (Advanced tab)
                 { m_Setting.GetOptionGroupLocaleID(Settings.AdvRowActions), "Actions" },
                 { m_Setting.GetOptionGroupLocaleID(Settings.AdvRowDebug),   "DEBUG"   },
 
