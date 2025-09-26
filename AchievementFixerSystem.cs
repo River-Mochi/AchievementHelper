@@ -11,11 +11,11 @@ namespace AchievementFixer
     [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     public partial class AchievementFixerSystem : GameSystemBase
     {
-        private const int kAssertFrames = 600;      // ~10s @60 FPS
-        private const int kStableFramesToExit = 60; // early-exit once TRUE for this many frames
 
         private int m_FramesLeft;
         private int m_StableTrueFrames;
+        private const int kAssertFrames = 180;      // ~3s @60 FPS
+        private const int kStableFramesToExit = 60; // early-exit once TRUE for this many frames
 
         protected override void OnCreate()
         {
@@ -34,7 +34,9 @@ namespace AchievementFixer
             m_StableTrueFrames = 0;
 
             ForceEnableIfNeeded("OnGameLoadingComplete");
+#if DEBUG
             Mod.log.Info($"Assert window started: {kAssertFrames} frames; early-exit after {kStableFramesToExit} stable frames.");
+#endif
         }
 
         protected override void OnUpdate()
@@ -55,8 +57,10 @@ namespace AchievementFixer
             }
 
             m_FramesLeft--;
+#if DEBUG
             if (m_FramesLeft % 60 == 0)
                 Mod.log.Info($"Asserting… {m_FramesLeft} frames left (stable={m_StableTrueFrames})");
+#endif
         }
 
         private static bool ForceEnableIfNeeded(string source)

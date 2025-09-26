@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace AchievementFixer
 {
-    [FileLocation("AchievementFixer")]
+    [FileLocation("ModsSettings/AchievementFixer")]
     [SettingsUIGroupOrder(
         MainInfoGroup, ButtonGroup, NotesGroup,
         AdvRowActions, AdvRowDebug
