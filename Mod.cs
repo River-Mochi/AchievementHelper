@@ -51,14 +51,14 @@ namespace AchievementFixer
 
             // Locales (register BEFORE Options UI)
             AddLocale("en-US", new LocaleEN(settings));
-            //  AddLocale("fr-FR", new LocaleFR(settings));
-            //  AddLocale("de-DE", new LocaleDE(settings));
-            //  AddLocale("es-ES", new LocaleES(settings));
-            //   AddLocale("it-IT", new LocaleIT(settings));
-            //   AddLocale("ja-JP", new LocaleJA(settings));
-            //   AddLocale("ko-KR", new LocaleKO(settings));
-            //   AddLocale("vi-VN", new LocaleVI(settings));
-            //   AddLocale("zh-HANS", new LocaleZH_CN(settings));
+            AddLocale("fr-FR", new LocaleFR(settings));
+            AddLocale("de-DE", new LocaleDE(settings));
+            AddLocale("es-ES", new LocaleES(settings));
+            AddLocale("it-IT", new LocaleIT(settings));
+            AddLocale("ja-JP", new LocaleJA(settings));
+            AddLocale("ko-KR", new LocaleKO(settings));
+            AddLocale("vi-VN", new LocaleVI(settings));
+            AddLocale("zh-HANS", new LocaleZH_CN(settings));
 
 
             // Load any saved settings (none currently)
