@@ -27,14 +27,6 @@
 	<ItemGroup>
 		<!-- Do not include doc folder in build; If anything tried to mark docs as Content, undo it -->
 		<Content Remove="docs\**\*.*" />
-		<Compile Remove="Locale\LocaleDE.cs" />
-		<Compile Remove="Locale\LocaleES.cs" />
-		<Compile Remove="Locale\LocaleFR.cs" />
-		<Compile Remove="Locale\LocaleIT.cs" />
-		<Compile Remove="Locale\LocaleJA.cs" />
-		<Compile Remove="Locale\LocaleKO.cs" />
-		<Compile Remove="Locale\LocaleVI.cs" />
-		<Compile Remove="Locale\LocaleZH_CN.cs" />
 
 		<!-- Keep docs as None, and never copy or pack -->
 		<None Update="docs\**\*.*">
