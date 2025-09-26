@@ -113,7 +113,6 @@ namespace AchievementFixer
         }
 
     }
-
     /// <summary>In-memory localization source.</summary>
     internal sealed class MemoryLocalizationSource : IDictionarySource
     {

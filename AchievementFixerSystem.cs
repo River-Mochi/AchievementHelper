@@ -74,7 +74,7 @@ namespace AchievementFixer
 
             if (!pm.achievementsEnabled)
             {
-                Mod.log.Warn($"{source}: Detected achievementsEnabled == FALSE. Forcing TRUE.");
+                Mod.log.Info($"{source}: ATTENTION: detected game flipped achievementsEnabled == FALSE. Forcing TRUE.");
                 pm.achievementsEnabled = true;
                 return true;
             }

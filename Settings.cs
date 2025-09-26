@@ -10,14 +10,14 @@ using UnityEngine;
 
 namespace AchievementFixer
 {
-    [FileLocation("ModsSettings/AchievementFixer")]
+    [FileLocation("ModsSettings/AchievementFixer/AchievementFixer")]    // location of persistent settings
     [SettingsUIGroupOrder(
         MainInfoGroup, ButtonGroup, NotesGroup,
         AdvRowActions, AdvRowDebug
     )]
     [SettingsUIShowGroupName(
-        NotesGroup,     // show only NOTES on Main tab
-        AdvRowDebug     // show only DEBUG on Advanced tab
+        NotesGroup,     // show NOTES on Main tab
+        AdvRowDebug     // show DEBUG on Advanced tab
     )]
 
     public class Settings : ModSetting
@@ -175,7 +175,7 @@ namespace AchievementFixer
 
         // ---- Helpers ----
 
-        /// <summary>Dropdown provider: value = internalName, display = friendly title.</summary>
+        /// <summary> Dropdown: value = internalName, display = friendly title.</summary>
         public static DropdownItem<string>[] GetAchievementChoices()
         {
             var pm = PlatformManager.instance;

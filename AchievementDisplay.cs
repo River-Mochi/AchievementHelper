@@ -22,7 +22,7 @@ namespace AchievementFixer
                 ["NowTheyreAllAshTrees"] = "Now They’re All Ash Trees",
             };
 
-        // simple splitter: inserts spaces between CamelCase and digits.
+        // splitter: inserts spaces between CamelCase and digits.
         private static readonly Regex s_SimpleSplit =
             new(@"(?<!^)(?=[A-Z0-9])", RegexOptions.Compiled);
 
