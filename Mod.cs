@@ -25,16 +25,13 @@ namespace AchievementFixer
             s_Asm.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? "1.0.0";
 
         public static readonly string VersionShort = s_InfoRaw.Split(' ', '+')[0];
-        public static readonly string VersionInformational = s_InfoRaw;
 
         private static bool s_BannerLogged;
 
-        // Add common locale variants (we'll also target the active locale dynamically)
+        // Add common locale variants
         internal static readonly string[] s_LocaleIds =
         {
-            "en-US","en-GB","en","en-US-POSIX",
-            "fr-FR","de-DE","es-ES","it-IT","ja-JP","ko-KR","vi-VN","zh-HANS","zh-HANT",
-            "pt-BR","pt-PT","pl-PL","ru-RU","tr-TR","cs-CZ","nl-NL","sv-SE","fi-FI","nb-NO","da-DK"
+            "en-US","en","fr-FR","de-DE","es-ES","it-IT","ja-JP","ko-KR","vi-VN","zh-HANS",
         };
 
         public void OnLoad(UpdateSystem updateSystem)
@@ -102,7 +99,8 @@ namespace AchievementFixer
             var lm = GameManager.instance?.localizationManager;
             if (lm == null) { Mod.log.Warn("No LocalizationManager; cannot add warning override."); return; }
 
-            const string key = "Menu.ACHIEVEMENTS_WARNING_MODS";             // confirmed by identify run
+
+            const string key = "Menu.ACHIEVEMENTS_WARNING_MODS";              // Confirmed key for string
             const string text = "Achievements Enabled by Achievement Fixer."; // or "" to fully hide
 
             var entries = new Dictionary<string, string> { [key] = text };

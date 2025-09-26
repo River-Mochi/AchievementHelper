@@ -40,20 +40,19 @@ namespace AchievementFixer
                 // Main >> Links
                 { m_Setting.GetOptionLabelLocaleID(nameof(Settings.OpenAchievementsWikiButton)), "Achievements wiki" },
                 { m_Setting.GetOptionDescLocaleID(nameof(Settings.OpenAchievementsWikiButton)),
-                  "Open the CS2 achievements wiki in your browser." },
+                  "Open the achievements wiki in your browser." },
 
                 // Main >> Notes
-                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.MainNotes)),
-                  "Achievements are now enabled. Enjoy! :)\n" +
-                  "Note: sometimes after completing required tasks for an achievement, it might not appear until reboot." },
-                { m_Setting.GetOptionDescLocaleID(nameof(Settings.MainNotes)), "" },
+                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.MainNotes)), "Achievements are now enabled. Enjoy! :)"   },
+                { m_Setting.GetOptionDescLocaleID(nameof(Settings.MainNotes)),
+                    "Note: sometimes after completing required tasks for an achievement, it might not appear until reboot of game." },
 
                 // --- Advanced tab ---
                 { m_Setting.GetOptionLabelLocaleID(nameof(Settings.SelectedAchievement)),   "Select achievement" },
                 { m_Setting.GetOptionDescLocaleID(nameof(Settings.SelectedAchievement)),    "Choose an achievement to operate on." },
 
                 { m_Setting.GetOptionLabelLocaleID(nameof(Settings.UnlockSelectedAchievement)), "Unlock selected" },
-                { m_Setting.GetOptionDescLocaleID(nameof(Settings.UnlockSelectedAchievement)),  "**Unlocks/Completes** the selected achievement." },
+                { m_Setting.GetOptionDescLocaleID(nameof(Settings.UnlockSelectedAchievement)),  "**Unlocks & Completes** the selected achievement." },
 
                 { m_Setting.GetOptionLabelLocaleID(nameof(Settings.ClearSelectedAchievement)),  "Clear selected" },
                 { m_Setting.GetOptionDescLocaleID(nameof(Settings.ClearSelectedAchievement)),   "Marks the selected achievement as **not completed**." },
@@ -62,15 +61,16 @@ namespace AchievementFixer
                 // Advanced >> advisory text
                 { m_Setting.GetOptionLabelLocaleID(nameof(Settings.AdvancedAdvisory)),
                   "This mod already enables achievements (default) without using any buttons in the Advanced tab.\n" +
-                  "If you want something faster, see the [Unlock Selected] button." },
-                { m_Setting.GetOptionDescLocaleID(nameof(Settings.AdvancedAdvisory)), "" },
+                  "If you want something faster, then see the [Unlock Selected] button." },
+                { m_Setting.GetOptionDescLocaleID(nameof(Settings.AdvancedAdvisory)),
+                    "BE CAREFUL using the [Clear ALL] button. If you accidentally use it, you can recover complete achievements with the [Unlock Selected] button." },
 
                 // Advanced >> DEBUG (Clear All)
                 { m_Setting.GetOptionLabelLocaleID(nameof(Settings.ClearAllAchievements)),  "CLEAR ALL ACHIEVEMENTS" },
                 { m_Setting.GetOptionDescLocaleID(nameof(Settings.ClearAllAchievements)),
                     "**WARNING**: clears/resets ALL achievements. Useful to debug or for testers.\n" +
                     "If you accidentally use this button, you can get achievements back by using the [Unlock Selected] button." },
-                { m_Setting.GetOptionWarningLocaleID(nameof(Settings.ClearAllAchievements)), "CLEAR / RESET ALL achievements.\nContinue?" },
+                { m_Setting.GetOptionWarningLocaleID(nameof(Settings.ClearAllAchievements)), "CLEAR / RESET all achievements to the original not complete status.\nContinue?" },
             };
         }
 
