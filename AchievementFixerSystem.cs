@@ -13,17 +13,14 @@ namespace AchievementFixer
     {
 
         private int m_FramesLeft;
-        private int m_StableTrueFrames;
 
         // Assert window: after each load, for a short time, keep  achievementsEnabled = true.
         private const int kAssertFrames = 300;      // 300 frames = (~6s @ 60 fps)
-        private const int kStableFramesToExit = 60; // early-exit if TRUE for this many frames (micro-optimization)
 
         protected override void OnCreate()
         {
             base.OnCreate();
             m_FramesLeft = 0;
-            m_StableTrueFrames = 0;
             Mod.log.Info("AchievementFixerSystem created");
         }
 
@@ -33,7 +30,6 @@ namespace AchievementFixer
 
             // Start a new assert window at load-complete
             m_FramesLeft = kAssertFrames;
-            m_StableTrueFrames = 0;
 
             ForceEnableIfNeeded("OnGameLoadingComplete");
 #if DEBUG
@@ -43,27 +39,20 @@ namespace AchievementFixer
 
         protected override void OnUpdate()
         {
-
             if (m_FramesLeft <= 0)
                 return;
 
-            bool flipped = ForceEnableIfNeeded("OnUpdate");
-            if (flipped) m_StableTrueFrames = 0;
-            else if (m_StableTrueFrames < kStableFramesToExit) m_StableTrueFrames++;
-
-            if (m_StableTrueFrames >= kStableFramesToExit)
-            {
-                Mod.log.Info($"Early-exit: achievementsEnabled stable for {kStableFramesToExit} frames.");
-                m_FramesLeft = 0;
-                return;
-            }
+            // Flip back to TRUE if game flips it off during the assert window
+            ForceEnableIfNeeded("OnUpdate");
 
             m_FramesLeft--;
+
 #if DEBUG
-            if (m_FramesLeft % 60 == 0)
-                Mod.log.Info($"Asserting… {m_FramesLeft} frames left (stable={m_StableTrueFrames})");
+    if (m_FramesLeft % 60 == 0)
+        Mod.log.Info($"Asserting… {m_FramesLeft} frames left");
 #endif
         }
+
 
         private static bool ForceEnableIfNeeded(string source)
         {

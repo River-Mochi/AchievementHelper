@@ -113,12 +113,12 @@ namespace AchievementFixer
             // attach override to other supported locales to survive mid-session language change
             foreach (var localeId in s_LocaleIds)
                 lm.AddSource(localeId, new MemoryLocalizationSource(entries));
-            Mod.log.Info("Installed override for Menu.ACHIEVEMENTS_WARNING_MODS.");
+            Mod.log.Info("Installed override for 'Achievements disabled because of mods.'");
         }
 
     }
-    /// <summary>In-memory localization source.</summary>
-    // Override banner localization key map
+    /// <summary> In-memory localization source </summary>
+    // Helper - override banner localization key map
     internal sealed class MemoryLocalizationSource : IDictionarySource
     {
         private readonly Dictionary<string, string> m_Entries;
