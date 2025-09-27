@@ -81,7 +81,7 @@ namespace AchievementFixer
                 if (!value) return;
                 try
                 {
-                    if (!TryResolveAchievementId(SelectedAchievement, out var id))
+                    if (!TryGetAchievementId(SelectedAchievement, out var id))
                     {
                         Mod.log.Warn($"UnlockSelectedAchievement: could not resolve '{SelectedAchievement}'.");
                         return;
@@ -116,7 +116,7 @@ namespace AchievementFixer
                 if (!value) return; // user clicked "No"
                 try
                 {
-                    if (!TryResolveAchievementId(SelectedAchievement, out var id))
+                    if (!TryGetAchievementId(SelectedAchievement, out var id))
                     {
                         Mod.log.Warn($"ClearSelectedAchievement: could not resolve '{SelectedAchievement}'.");
                         return;
@@ -202,7 +202,7 @@ namespace AchievementFixer
             return items.OrderBy(i => i.displayName.id, StringComparer.OrdinalIgnoreCase).ToArray();
         }
 
-        private static bool TryResolveAchievementId(string selectedValue, out AchievementId id)
+        private static bool TryGetAchievementId(string selectedValue, out AchievementId id)
         {
             id = default;
             var pm = PlatformManager.instance;

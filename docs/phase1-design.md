@@ -7,11 +7,12 @@
 ## Options Menu
 
 
-## Non-goals Phase 1
+## Phase 1
 - This mod does not automatically give you the achievement, you still need to do the natural things required, e.g., build 10 parks in a single city to get "Groundskeeper".
-- Changing the in-game UI text that claims “Achievements disabled…” (that’s a separate UI-side issue).
-- Touching the built-in Achievements tab or unlocking achievements directly.
-- This mod skips DLC achievements for DLCs the player does not own. We don't meddle with that.
+- Change the in-game UI text that claims “Achievements disabled…” 
+- unlock selected achievements directly.
+- reset achievement directly to not completed status.
+- This mod skips DLC achievements for DLCs players do not own. We don't meddle with that.
 
 ---
 <br><br>
@@ -89,6 +90,10 @@
 - We do not touch saves, achievement definitions, or DLC logic.
 
 ---
+
+Game API: PlatformManager, AchievementId, AchievementsHelper, GameManager, Game.Settings.*, Game.UI.Widgets.*, WorldSystemFilter, GameSystemBase, etc.
+
+Custom code: AchievementFixerSystem, AchievementDisplay, Settings, Mod, LocaleEN, MemoryLocalizationSource.
 
 ## Algorithm
 

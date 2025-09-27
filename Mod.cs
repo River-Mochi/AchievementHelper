@@ -110,7 +110,7 @@ namespace AchievementFixer
             if (!string.IsNullOrEmpty(active))
                 lm.AddSource(active, new MemoryLocalizationSource(entries));    // call AddSource AFTER game sources so 'last source wins'
 
-            // attach override to other supported locales to survive mid-session language change
+            // Override to other supported locales when there is a mid-session language change
             foreach (var localeId in s_LocaleIds)
                 lm.AddSource(localeId, new MemoryLocalizationSource(entries));
             Mod.log.Info("Installed override for 'Achievements disabled because of mods.'");

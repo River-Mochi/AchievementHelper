@@ -8,7 +8,7 @@ namespace AchievementFixer
     /// <summary>
     /// Keeps achievements enabled after each load with a short assert window.
     /// </summary>
-    [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
+    [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]    //only run this system in the actual gameplay
     public partial class AchievementFixerSystem : GameSystemBase
     {
 
@@ -42,10 +42,10 @@ namespace AchievementFixer
             if (m_FramesLeft <= 0)
                 return;
 
-            // Flip back to TRUE if game flips it off during the assert window
-            ForceEnableIfNeeded("OnUpdate");
+            // If game flips FALSE anytime inside this window, flip it back to TRUE.
+            bool flipped = ForceEnableIfNeeded("OnUpdate");
 
-            m_FramesLeft--;
+            m_FramesLeft--;     // post decrement -1
 
 #if DEBUG
     if (m_FramesLeft % 60 == 0)
