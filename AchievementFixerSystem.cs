@@ -15,7 +15,7 @@ namespace AchievementFixer
         private int m_FramesLeft;
 
         // Assert window: after each load, for a short time, keep  achievementsEnabled = true.
-        private const int kAssertFrames = 300;      // 300 frames = (~6s @ 60 fps)
+        private const int kAssertFrames = 300;      // 300 frames = (~5s at 60 fps)
 
         protected override void OnCreate()
         {
@@ -33,7 +33,7 @@ namespace AchievementFixer
 
             ForceEnableIfNeeded("OnGameLoadingComplete");
 #if DEBUG
-            Mod.log.Info($"Assert window started: {kAssertFrames} frames; early-exit after {kStableFramesToExit} stable frames.");
+            Mod.log.Info($"Assert window started: {kAssertFrames} frames.");
 #endif
         }
 
@@ -43,9 +43,9 @@ namespace AchievementFixer
                 return;
 
             // If game flips FALSE anytime inside this window, flip it back to TRUE.
-            bool flipped = ForceEnableIfNeeded("OnUpdate");
+            ForceEnableIfNeeded("OnUpdate");
 
-            m_FramesLeft--;     // post decrement -1
+            m_FramesLeft--;     // Tick down the window; post decrement -1
 
 #if DEBUG
     if (m_FramesLeft % 60 == 0)

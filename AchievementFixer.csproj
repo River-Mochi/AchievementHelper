@@ -99,4 +99,9 @@
 		</Reference>
 	</ItemGroup>
 
+	<ItemGroup>
+		<None Include="$(ModPropsFile)" Link="Properties\Mod.props"/>
+		<None Include="$(ModTargetsFile)" Link="Properties\Mod.targets"/>
+	</ItemGroup>
+
 </Project>
