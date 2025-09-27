@@ -45,13 +45,12 @@ namespace AchievementFixer
                   "Open the achievements wiki in your browser." },
 
                 // Main >> Notes
-                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.MainNotes)), "Achievements are enabled now - just do the required tasks to naturally complete achievements.\n" +
-                "Enjoy! :)\n" +
-                "Advanced tab has additional options.\n\n" +
-                "There are 6 achievements in Steam that are not available until the Bridges & Ports DLC is released" },
-
-                { m_Setting.GetOptionDescLocaleID(nameof(Settings.MainNotes)),
-                    "Note: sometimes after completing required tasks for an achievement, it might not appear until reboot of game." },
+                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.MainNotes)), "Achievements are enabled now, just do the tasks to complete them.\n" +
+                "Enjoy! :)\n\n\n" +
+                "Notes:\n" +
+                "• Advanced tab has additional options.\n" +
+                "• There are 6 achievements that are not available until the Bridges & Ports DLC is released\n" +
+                "• Sometimes after completing an achievement, it may not appear until game reboot." },
 
                 // --- Advanced tab ---
                 { m_Setting.GetOptionLabelLocaleID(nameof(Settings.SelectedAchievement)),   "Select achievement" },
@@ -66,9 +65,8 @@ namespace AchievementFixer
 
                 // Advanced >> advisory text
                 { m_Setting.GetOptionLabelLocaleID(nameof(Settings.AdvancedAdvisory)),
-                  "This mod already enables achievements (default)\n" +
-                  "without using any buttons in the Advanced tab.\n" +
-                  "If you want something faster, then try the [Unlock Selected] button." },
+                  "• This mod already enables achievements without using any buttons in the Advanced tab.\n" +
+                  "• If you want some things faster, then try the [Unlock Selected] button." },
                 { m_Setting.GetOptionDescLocaleID(nameof(Settings.AdvancedAdvisory)),
                     "BE CAREFUL using the [Clear ALL] button. If you accidentally use it, you can recover completed achievements with the [Unlock Selected] button." },
 
