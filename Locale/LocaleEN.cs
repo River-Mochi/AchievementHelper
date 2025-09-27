@@ -45,7 +45,7 @@ namespace AchievementFixer
                   "Open the achievements wiki in your browser." },
 
                 // Main >> Notes
-                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.MainNotes)), "Achievements are enabled now; just do the required tasks to naturally complete achievements.\n" +
+                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.MainNotes)), "Achievements are enabled now - just do the required tasks to naturally complete achievements.\n" +
                 "Enjoy! :)"   },
                 { m_Setting.GetOptionDescLocaleID(nameof(Settings.MainNotes)),
                     "Note: sometimes after completing required tasks for an achievement, it might not appear until reboot of game." },
@@ -63,8 +63,9 @@ namespace AchievementFixer
 
                 // Advanced >> advisory text
                 { m_Setting.GetOptionLabelLocaleID(nameof(Settings.AdvancedAdvisory)),
-                  "This mod already enables achievements (default) without using any buttons in the Advanced tab.\n" +
-                  "If you want something faster, then see the [Unlock Selected] button." },
+                  "This mod already enables achievements (default)\n" +
+                  "without using any buttons in the Advanced tab.\n" +
+                  "If you want something faster, then try the [Unlock Selected] button." },
                 { m_Setting.GetOptionDescLocaleID(nameof(Settings.AdvancedAdvisory)),
                     "BE CAREFUL using the [Clear ALL] button. If you accidentally use it, you can recover completed achievements with the [Unlock Selected] button." },
 
