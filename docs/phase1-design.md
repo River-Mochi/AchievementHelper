@@ -53,7 +53,7 @@
 | `AchievementsUISystem.GetAchievementTabStatus()` | Method | Decides which warning state (Available, Hidden, ModsDisabled, OptionsDisabled) is shown. |
 | `GetterValueBinding<int>("achievements", "achievementTabStatus", ...)` | Binding | Exposes tab status to the UI. |
 | `IAchievement` / `PlatformManager.instance.EnumerateAchievements()` | API | Enumerates names, descriptions, progress, and icons. |
-| `_c.Menu.ACHIEVEMENTS_WARNING_*` keys | Localization keys | Text for warning messages (“disabled because mods…”, etc.). |
+| `Menu.ACHIEVEMENTS_WARNING_*` keys | Localization keys | Text for warning messages (“disabled because mods…”, etc.). |
 | `Media/Game/Achievements/*.png` | Assets | Icons used in the Achievements tab. Color = achieved; `_locked` = grayscale locked state. |
 | `CityConfigurationSystem.usedMods.Count` | Field | Used by `AchievementsUISystem.GetAchievementTabStatus()` to decide ModsDisabled status. |
 | `Achievements` (static IDs) | Data | Contains all achievement IDs. |

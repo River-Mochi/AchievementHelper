@@ -57,7 +57,6 @@ namespace AchievementFixer
             AddLocale("vi-VN", new LocaleVI(settings));
             AddLocale("zh-HANS", new LocaleZH_CN(settings));
 
-
             // Load any saved settings (none currently)
             AssetDatabase.global.LoadSettings("AchievementFixer", settings, new Settings(this));
 
@@ -72,7 +71,9 @@ namespace AchievementFixer
 
             var lm = GameManager.instance?.localizationManager;
             if (lm != null) log.Info($"[Locale] Active: {lm.activeLocaleId}");
+
         }
+
 
         public void OnDispose()
         {
@@ -101,7 +102,7 @@ namespace AchievementFixer
             if (lm == null) { Mod.log.Warn("No LocalizationManager; cannot add warning override."); return; }
 
 
-            const string key = "Menu.ACHIEVEMENTS_WARNING_MODS";              // key for string
+            const string key = "Menu.ACHIEVEMENTS_WARNING_MODS";               // key for string
             const string text = "Achievements Enabled by Achievement Fixer."; // or "" to fully hide
 
             var entries = new Dictionary<string, string> { [key] = text };
