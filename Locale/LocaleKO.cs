@@ -64,9 +64,9 @@ namespace AchievementFixer
                 { m_Setting.GetOptionDescLocaleID(nameof(Settings.AdvancedAdvisory)), "[모두 초기화] 버튼 사용 시 주의하세요. 실수했다면 [선택 항목 해제]로 복구할 수 있습니다." },
 
                 // Advanced >> DEBUG (Clear All)
-                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.ClearAllAchievements)), "모든 도전과제 초기화" },
-                { m_Setting.GetOptionDescLocaleID(nameof(Settings.ClearAllAchievements)), "**경고**: 모든 도전과제를 삭제/초기화합니다(테스트용).\n실수했다면 [선택 항목 해제]로 되돌릴 수 있습니다." },
-                { m_Setting.GetOptionWarningLocaleID(nameof(Settings.ClearAllAchievements)), "모든 도전과제를 **미완료** 초기 상태로 되돌립니다. 계속할까요?" },
+                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.ResetAllAchievements)), "모든 도전과제 초기화" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Settings.ResetAllAchievements)), "**경고**: 모든 도전과제를 삭제/초기화합니다(테스트용).\n실수했다면 [선택 항목 해제]로 되돌릴 수 있습니다." },
+                { m_Setting.GetOptionWarningLocaleID(nameof(Settings.ResetAllAchievements)), "모든 도전과제를 **미완료** 초기 상태로 되돌립니다. 계속할까요?" },
             };
         }
 

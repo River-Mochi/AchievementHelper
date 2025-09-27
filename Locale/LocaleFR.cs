@@ -64,9 +64,9 @@ namespace AchievementFixer
                 { m_Setting.GetOptionDescLocaleID(nameof(Settings.AdvancedAdvisory)), "FAITES ATTENTION avec le bouton [Tout réinitialiser]. En cas d’erreur, vous pouvez récupérer des succès avec [Déverrouiller la sélection]." },
 
                 // Advanced >> DEBUG (Clear All)
-                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.ClearAllAchievements)), "RÉINITIALISER TOUS LES SUCCÈS" },
-                { m_Setting.GetOptionDescLocaleID(nameof(Settings.ClearAllAchievements)), "**AVERTISSEMENT** : efface/réinitialise TOUS les succès. Utile pour le test.\nSi vous l’utilisez par erreur, vous pouvez récupérer les succès via [Déverrouiller la sélection]." },
-                { m_Setting.GetOptionWarningLocaleID(nameof(Settings.ClearAllAchievements)), "RÉINITIALISER / EFFACER tous les succès vers l’état d’origine (non accompli). Continuer ?" },
+                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.ResetAllAchievements)), "RÉINITIALISER TOUS LES SUCCÈS" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Settings.ResetAllAchievements)), "**AVERTISSEMENT** : efface/réinitialise TOUS les succès. Utile pour le test.\nSi vous l’utilisez par erreur, vous pouvez récupérer les succès via [Déverrouiller la sélection]." },
+                { m_Setting.GetOptionWarningLocaleID(nameof(Settings.ResetAllAchievements)), "RÉINITIALISER / EFFACER tous les succès vers l’état d’origine (non accompli). Continuer ?" },
             };
         }
 

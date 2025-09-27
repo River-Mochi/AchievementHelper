@@ -6,7 +6,7 @@ using Unity.Entities;                   // WorldSystemFilter
 namespace AchievementFixer
 {
     /// <summary>
-    /// Keeps achievements enabled after load with a short assert window.
+    /// Keeps achievements enabled after each load with a short assert window.
     /// </summary>
     [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     public partial class AchievementFixerSystem : GameSystemBase
@@ -14,8 +14,10 @@ namespace AchievementFixer
 
         private int m_FramesLeft;
         private int m_StableTrueFrames;
-        private const int kAssertFrames = 180;      // ~3s @60 FPS
-        private const int kStableFramesToExit = 60; // early-exit once TRUE for this many frames
+
+        // Assert window: after each load, for a short time, keep  achievementsEnabled = true.
+        private const int kAssertFrames = 300;      // 300 frames = (~6s @ 60 fps)
+        private const int kStableFramesToExit = 60; // early-exit if TRUE for this many frames (micro-optimization)
 
         protected override void OnCreate()
         {
@@ -29,7 +31,7 @@ namespace AchievementFixer
         {
             base.OnGameLoadingComplete(purpose, mode);
 
-            // Start a new assert window at load-complete.
+            // Start a new assert window at load-complete
             m_FramesLeft = kAssertFrames;
             m_StableTrueFrames = 0;
 

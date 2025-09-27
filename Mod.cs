@@ -92,7 +92,8 @@ namespace AchievementFixer
         }
 
         /// <summary>
-        /// Blank the Achievement warning strings used on map menu and Progression/Achievements panel.
+        /// Inject tiny localization map so game's banner key resolves to our text
+        /// Map menu and Achievements panel no longer show "achievements disabled"
         /// </summary>
         private static void TryInstallWarningOverrideSource()
         {
@@ -100,20 +101,24 @@ namespace AchievementFixer
             if (lm == null) { Mod.log.Warn("No LocalizationManager; cannot add warning override."); return; }
 
 
-            const string key = "Menu.ACHIEVEMENTS_WARNING_MODS";              // Confirmed key for string
+            const string key = "Menu.ACHIEVEMENTS_WARNING_MODS";              // key for string
             const string text = "Achievements Enabled by Achievement Fixer."; // or "" to fully hide
 
             var entries = new Dictionary<string, string> { [key] = text };
 
             var active = lm.activeLocaleId;
             if (!string.IsNullOrEmpty(active))
-                lm.AddSource(active, new MemoryLocalizationSource(entries));
+                lm.AddSource(active, new MemoryLocalizationSource(entries));    // call AddSource AFTER game sources so 'last source wins'
 
+            // attach override to other supported locales to survive mid-session language change
+            foreach (var localeId in s_LocaleIds)
+                lm.AddSource(localeId, new MemoryLocalizationSource(entries));
             Mod.log.Info("Installed override for Menu.ACHIEVEMENTS_WARNING_MODS.");
         }
 
     }
     /// <summary>In-memory localization source.</summary>
+    // Override banner localization key map
     internal sealed class MemoryLocalizationSource : IDictionarySource
     {
         private readonly Dictionary<string, string> m_Entries;

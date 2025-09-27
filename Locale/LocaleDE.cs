@@ -64,9 +64,9 @@ namespace AchievementFixer
                 { m_Setting.GetOptionDescLocaleID(nameof(Settings.AdvancedAdvisory)), "VORSICHT mit [Alle zurücksetzen]. Falls versehentlich gedrückt, kannst du Erfolge mit [Ausgewählten freischalten] wiederherstellen." },
 
                 // Advanced >> DEBUG (Clear All)
-                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.ClearAllAchievements)), "ALLE ERFOLGE ZURÜCKSETZEN" },
-                { m_Setting.GetOptionDescLocaleID(nameof(Settings.ClearAllAchievements)), "**WARNUNG**: Setzt ALLE Erfolge zurück (zum Testen nützlich).\nBei Fehlbedienung kannst du Erfolge mit [Ausgewählten freischalten] zurückholen." },
-                { m_Setting.GetOptionWarningLocaleID(nameof(Settings.ClearAllAchievements)), "ALLE ERFOLGE auf „nicht abgeschlossen“ zurücksetzen. Fortfahren?" },
+                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.ResetAllAchievements)), "ALLE ERFOLGE ZURÜCKSETZEN" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Settings.ResetAllAchievements)), "**WARNUNG**: Setzt ALLE Erfolge zurück (zum Testen nützlich).\nBei Fehlbedienung kannst du Erfolge mit [Ausgewählten freischalten] zurückholen." },
+                { m_Setting.GetOptionWarningLocaleID(nameof(Settings.ResetAllAchievements)), "ALLE ERFOLGE auf „nicht abgeschlossen“ zurücksetzen. Fortfahren?" },
             };
         }
 

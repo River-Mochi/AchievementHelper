@@ -64,9 +64,9 @@ namespace AchievementFixer
                 { m_Setting.GetOptionDescLocaleID(nameof(Settings.AdvancedAdvisory)), "使用 [重置全部] 时请小心。如果误触，可通过 [解锁所选] 取回成就。" },
 
                 // Advanced >> DEBUG (Clear All)
-                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.ClearAllAchievements)), "重置所有成就" },
-                { m_Setting.GetOptionDescLocaleID(nameof(Settings.ClearAllAchievements)), "**警告**：清除/重置所有成就（用于调试/测试）。\n如果误操作，可用 [解锁所选] 取回成就。" },
-                { m_Setting.GetOptionWarningLocaleID(nameof(Settings.ClearAllAchievements)), "将所有成就重置为**未完成**的初始状态。继续？" },
+                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.ResetAllAchievements)), "重置所有成就" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Settings.ResetAllAchievements)), "**警告**：清除/重置所有成就（用于调试/测试）。\n如果误操作，可用 [解锁所选] 取回成就。" },
+                { m_Setting.GetOptionWarningLocaleID(nameof(Settings.ResetAllAchievements)), "将所有成就重置为**未完成**的初始状态。继续？" },
             };
         }
 

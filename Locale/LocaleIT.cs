@@ -64,9 +64,9 @@ namespace AchievementFixer
                 { m_Setting.GetOptionDescLocaleID(nameof(Settings.AdvancedAdvisory)), "FAI ATTENZIONE a [Reimposta tutto]. Se lo premi per sbaglio, puoi recuperare gli obiettivi con [Sblocca selezionato]." },
 
                 // Advanced >> DEBUG (Clear All)
-                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.ClearAllAchievements)), "REIMPOSTA TUTTI GLI OBIETTIVI" },
-                { m_Setting.GetOptionDescLocaleID(nameof(Settings.ClearAllAchievements)), "**ATTENZIONE**: cancella/reimposta TUTTI gli obiettivi. Utile per test.\nSe sbagli, recuperali con [Sblocca selezionato]." },
-                { m_Setting.GetOptionWarningLocaleID(nameof(Settings.ClearAllAchievements)), "REIMPOSTARE / CANCELLARE tutti gli obiettivi allo stato INIZIALE (non completato). Continuare?" },
+                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.ResetAllAchievements)), "REIMPOSTA TUTTI GLI OBIETTIVI" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Settings.ResetAllAchievements)), "**ATTENZIONE**: cancella/reimposta TUTTI gli obiettivi. Utile per test.\nSe sbagli, recuperali con [Sblocca selezionato]." },
+                { m_Setting.GetOptionWarningLocaleID(nameof(Settings.ResetAllAchievements)), "REIMPOSTARE / CANCELLARE tutti gli obiettivi allo stato INIZIALE (non completato). Continuare?" },
             };
         }
 

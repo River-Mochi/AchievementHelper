@@ -64,9 +64,9 @@ namespace AchievementFixer
                 { m_Setting.GetOptionDescLocaleID(nameof(Settings.AdvancedAdvisory)), "CẨN THẬN với nút [Đặt lại Tất cả]. Nếu lỡ bấm, có thể khôi phục bằng [Mở khóa đã chọn]." },
 
                 // Advanced >> DEBUG (Clear All)
-                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.ClearAllAchievements)), "ĐẶT LẠI TẤT CẢ THÀNH TỰU" },
-                { m_Setting.GetOptionDescLocaleID(nameof(Settings.ClearAllAchievements)), "**CẢNH BÁO**: xóa/đặt lại TẤT CẢ thành tựu (hữu ích khi thử nghiệm).\nNếu bấm nhầm, có thể lấy lại bằng [Mở khóa đã chọn]." },
-                { m_Setting.GetOptionWarningLocaleID(nameof(Settings.ClearAllAchievements)), "ĐẶT LẠI / XÓA tất cả thành tựu về trạng thái BAN ĐẦU (chưa hoàn thành). Tiếp tục?" },
+                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.ResetAllAchievements)), "ĐẶT LẠI TẤT CẢ THÀNH TỰU" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Settings.ResetAllAchievements)), "**CẢNH BÁO**: xóa/đặt lại TẤT CẢ thành tựu (hữu ích khi thử nghiệm).\nNếu bấm nhầm, có thể lấy lại bằng [Mở khóa đã chọn]." },
+                { m_Setting.GetOptionWarningLocaleID(nameof(Settings.ResetAllAchievements)), "ĐẶT LẠI / XÓA tất cả thành tựu về trạng thái BAN ĐẦU (chưa hoàn thành). Tiếp tục?" },
             };
         }
 

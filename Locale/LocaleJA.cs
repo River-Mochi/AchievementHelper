@@ -64,9 +64,9 @@ namespace AchievementFixer
                 { m_Setting.GetOptionDescLocaleID(nameof(Settings.AdvancedAdvisory)), "［すべてリセット］の使用には注意してください。誤って押した場合は、［選択をアンロック］で取り戻せます。" },
 
                 // Advanced >> DEBUG (Clear All)
-                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.ClearAllAchievements)), "すべての実績をリセット" },
-                { m_Setting.GetOptionDescLocaleID(nameof(Settings.ClearAllAchievements)), "**警告**：すべての実績を消去/リセットします（テスト用途）。\n誤操作した場合は［選択をアンロック］で復旧できます。" },
-                { m_Setting.GetOptionWarningLocaleID(nameof(Settings.ClearAllAchievements)), "すべての実績を**未達成**の初期状態に戻します。続行しますか？" },
+                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.ResetAllAchievements)), "すべての実績をリセット" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Settings.ResetAllAchievements)), "**警告**：すべての実績を消去/リセットします（テスト用途）。\n誤操作した場合は［選択をアンロック］で復旧できます。" },
+                { m_Setting.GetOptionWarningLocaleID(nameof(Settings.ResetAllAchievements)), "すべての実績を**未達成**の初期状態に戻します。続行しますか？" },
             };
         }
 

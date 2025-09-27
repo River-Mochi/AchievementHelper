@@ -9,6 +9,18 @@
 	<!--LongDescription Value="Achievement Fixer activates in game achievements system even if the game is started with mods installed. Normally CS2 disables all achievements if it detects any mods are installed." /-->
 	<LongDescription>
 Achievement Fixer activates in game achievements system even if the game is started with mods installed. Normally CS2 disables all achievements if it detects any mods are installed.
+How it works:
+- just install it and play the game normally while you rack up achievements.
+
+Advanced tab: has several features if you want to do more.
+- Unlock achievement: select the achievement you want and unlock it which will mark it as completed
+- Reset achievement: clear or reset the selected achievement to mark it as **not completed**
+- if you make a mistake, just use  [Unlock] or [Reset] as needed.
+
+Debug options:
+- Reset All Achievements button clears out all achievements so they are all marked as "not complete".
+This is good for testing and debugging. If you use this by accident, you can always restore some achievements using [Unlock].
+
 	</LongDescription>
 	<!--Thumbnail-->
 	<Thumbnail Value="Properties/Thumbnail.png" />

@@ -1,13 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Text.RegularExpressions;
 
 namespace AchievementFixer
 {
+    /// <summary>
+    /// Formatting helper only. No game/UI references.
+    /// Converts internal name/ID => returns a nice display title.
+    /// </summary>
     internal static class AchievementDisplay
     {
-        // Hard-code the few that have format issues below. Everything else gets a simple split.
+        // Hard-fixes a few problematic titles; everything else gets simple split
         private static readonly Dictionary<string, string> s_Overrides =
             new(StringComparer.OrdinalIgnoreCase)
             {
@@ -29,6 +34,7 @@ namespace AchievementFixer
         private static readonly HashSet<string> s_MidLower =
             new(StringComparer.OrdinalIgnoreCase) { "of", "the", "to", "and", "in", "on", "for", "a", "an", "be", "or", "with" };
 
+        // Formatting only
         public static string Get(string internalNameOrId)
         {
             if (string.IsNullOrWhiteSpace(internalNameOrId)) return internalNameOrId ?? "";

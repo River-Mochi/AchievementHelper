@@ -64,9 +64,9 @@ namespace AchievementFixer
                 { m_Setting.GetOptionDescLocaleID(nameof(Settings.AdvancedAdvisory)), "CUIDADO con [Restablecer todo]. Si lo usas por accidente, puedes recuperar logros con [Desbloquear seleccionado]." },
 
                 // Advanced >> DEBUG (Clear All)
-                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.ClearAllAchievements)), "RESTABLECER TODOS LOS LOGROS" },
-                { m_Setting.GetOptionDescLocaleID(nameof(Settings.ClearAllAchievements)), "**ADVERTENCIA**: borra/restablece TODOS los logros. Útil para pruebas.\nSi te equivocas, recupera logros con [Desbloquear seleccionado]." },
-                { m_Setting.GetOptionWarningLocaleID(nameof(Settings.ClearAllAchievements)), "RESTABLECER / BORRAR todos los logros al estado ORIGINAL (no completado). ¿Continuar?" },
+                { m_Setting.GetOptionLabelLocaleID(nameof(Settings.ResetAllAchievements)), "RESTABLECER TODOS LOS LOGROS" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Settings.ResetAllAchievements)), "**ADVERTENCIA**: borra/restablece TODOS los logros. Útil para pruebas.\nSi te equivocas, recupera logros con [Desbloquear seleccionado]." },
+                { m_Setting.GetOptionWarningLocaleID(nameof(Settings.ResetAllAchievements)), "RESTABLECER / BORRAR todos los logros al estado ORIGINAL (no completado). ¿Continuar?" },
             };
         }
 

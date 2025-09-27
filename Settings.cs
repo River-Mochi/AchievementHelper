@@ -39,7 +39,7 @@ namespace AchievementFixer
 
         public Settings(IMod mod) : base(mod) { }
 
-        // ---- Main: Name / Version ----
+        // Main: Name / Version
         [SettingsUISection(MainTab, MainInfoGroup)]
         public string NameDisplay => Mod.Name;
 
@@ -65,7 +65,7 @@ namespace AchievementFixer
         [SettingsUISection(MainTab, NotesGroup)]
         public string MainNotes => string.Empty;
 
-        // ---- Advanced tab: dropdown + Unlock/Clear in same row ----
+        // Advanced tab: dropdown & Unlock + Clear in same row
         [SettingsUISection(AdvancedTab, AdvRowActions)]
         [SettingsUIDropdown(typeof(Settings), nameof(GetAchievementChoices))]
         public string SelectedAchievement { get; set; } = "";
@@ -104,7 +104,7 @@ namespace AchievementFixer
             }
         }
 
-        // Clear Selected
+        // Clear Selected (single)
         [SettingsUIButtonGroup(AdvRowActions)]
         [SettingsUIButton]
         [SettingsUIConfirmation] // Yes/No modal
@@ -130,7 +130,7 @@ namespace AchievementFixer
                     }
 
                     pm.ClearAchievement(id);
-                    Mod.log.Info($"Requested CLEAR of achievement: {SelectedAchievement} ({id}).");
+                    Mod.log.Info($"Requested CLEAR (reset) of single achievement: {SelectedAchievement} ({id}).");
                 }
                 catch (Exception ex)
                 {
@@ -139,17 +139,17 @@ namespace AchievementFixer
             }
         }
 
-        // Advanced: text directly under the two buttons
+        // Advanced: text under the two buttons
         [SettingsUIMultilineText]
         [SettingsUISection(AdvancedTab, AdvRowActions)]
         public string AdvancedAdvisory => string.Empty;
 
-        // ---- Advanced: DEBUG section (Clear All) ----
+        // Advanced: DEBUG section (Reset All)
         [SettingsUIButton]
-        [SettingsUIConfirmation]        // Yes/No Modal
+        [SettingsUIConfirmation]    // Yes/No Modal
         [SettingsUIButtonGroup(AdvRowDebug)]
         [SettingsUISection(AdvancedTab, AdvRowDebug)]
-        public bool ClearAllAchievements
+        public bool ResetAllAchievements
         {
             set
             {
@@ -159,23 +159,23 @@ namespace AchievementFixer
                     var pm = PlatformManager.instance;
                     if (pm == null)
                     {
-                        Mod.log.Warn("ClearAllAchievements: PlatformManager.instance is null.");
+                        Mod.log.Warn("ResetAllAchievements: PlatformManager.instance is null.");
                         return;
                     }
 
                     pm.ResetAchievements();
-                    Mod.log.Info("Requested CLEAR of ALL platform achievements.");
+                    Mod.log.Info("Requested Reset of ALL platform achievements.");
                 }
                 catch (Exception ex)
                 {
-                    Mod.log.Warn($"ClearAllAchievements failed: {ex.GetType().Name}: {ex.Message}");
+                    Mod.log.Warn($"ResetAllAchievements failed: {ex.GetType().Name}: {ex.Message}");
                 }
             }
         }
 
         // ---- Helpers ----
 
-        /// <summary> Dropdown: value = internalName, display = friendly title.</summary>
+        /// <summary> Dropdown: value = internalName, display = friendly name.</summary>
         public static DropdownItem<string>[] GetAchievementChoices()
         {
             var pm = PlatformManager.instance;
